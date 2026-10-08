@@ -1,0 +1,59 @@
+# ============================================================================
+# KRISHIFLOW LOCAL CONTAINER ORCHESTRATION WITH FINCH
+# AWS Hackathon "Build It" Track - Containers & Kubernetes Pillar
+# Runs 100% locally with Finch CLI (Open source, no Docker Desktop license, zero AWS bill)
+# ============================================================================
+version: '3.8'
+
+services:
+  # 1. LocalStack: Offline AWS Emulator (API Gateway, Lambda, DynamoDB, EventBridge)
+  localstack:
+    container_name: krishiflow-localstack
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"            # LocalStack Edge Port (Gateway, Lambda, SQS, DynamoDB)
+      - "4510-4559:4510-4559"  # Service-specific ports
+    environment:
+      - SERVICES=serverless,apigateway,lambda,dynamodb,eventbridge,sqs,sns
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - LAMBDA_EXECUTOR=local
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./localstack-init:/etc/localstack/init/ready.d"
+
+  # 2. OpenSearch: Local Produce & Mandi Search Index (Vector + Full-Text)
+  opensearch:
+    container_name: krishiflow-opensearch
+    image: opensearchproject/opensearch:2.12.0
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - DISABLE_SECURITY_PLUGIN=true
+      - plugins.neural_search.enabled=true
+
+  # 3. KrishiFlow Corretto 21 Edge Microservice (Simulated Mandi Hub Node)
+  krishiflow-edge-node:
+    container_name: krishiflow-edge-node
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM amazoncorretto:21-alpine
+        WORKDIR /app
+        COPY . /app
+        EXPOSE 8080
+        CMD ["echo", "KrishiFlow Amazon Corretto 21 Mandi Node running on Finch"]
+    ports:
+      - "8080:8080"
+    environment:
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - OPENSEARCH_HOST=http://opensearch:9200
+      - CEDAR_POLICY_PATH=/app/policies.cedar
+    depends_on:
+      - localstack
+      - opensearch

@@ -1,0 +1,93 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "krishiflow_produce_posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "category", "order": "ASCENDING" },
+        { "fieldPath": "askingPricePerKg", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "krishiflow_produce_posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "category", "order": "ASCENDING" },
+        { "fieldPath": "askingPricePerKg", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "krishiflow_produce_posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "category", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "krishiflow_produce_posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "grade", "order": "ASCENDING" },
+        { "fieldPath": "askingPricePerKg", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "krishiflow_produce_posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "grade", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "krishiflow_orders",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "farmerId", "order": "ASCENDING" },
+        { "fieldPath": "createdTimestamp", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "krishiflow_orders",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "buyerId", "order": "ASCENDING" },
+        { "fieldPath": "createdTimestamp", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "krishiflow_orders",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "createdTimestamp", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "krishiflow_buyer_demands",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "commodity", "order": "ASCENDING" },
+        { "fieldPath": "requiredDate", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "krishiflow_buyer_demands",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "buyerId", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "krishiflow_mandi_rates",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "commodity", "order": "ASCENDING" },
+        { "fieldPath": "lastUpdated", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

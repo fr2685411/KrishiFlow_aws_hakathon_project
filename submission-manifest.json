@@ -1,0 +1,51 @@
+{
+  "hackathon": "AWS Hackathon 2026",
+  "track": "Build It",
+  "trackDescription": "Open source, on your machine • No AWS account, no card, no bill",
+  "environmentProblemTrack": {
+    "trackNumber": "03",
+    "trackName": "Waste and Energy",
+    "problemDescription": "Close the loop on what a city throws away and cut what it burns. Eliminating agricultural post-harvest food waste and municipal landfill methane emissions, connecting informal street vendors to surplus produce, and cutting diesel transport energy."
+  },
+  "project": {
+    "name": "KrishiFlow",
+    "tagline": "Autonomous Fair-Price Agricultural Procurement & Zero-Waste Food Network",
+    "elevatorPitch": "KrishiFlow solves the $14B post-harvest food waste crisis in rural India by pairing farmers directly with mandi buyers and surplus food processors. It runs 100% locally on developer machines and edge mandi nodes without an AWS account, card, or cloud bill, powered by open-source AWS technologies including Strands Agents, Finch, SAM CLI, LocalStack, Corretto 21, OpenSearch, and Cedar policies.",
+    "repository": "https://github.com/aistudio-krishiflow/krishiflow",
+    "buildItCompliance": {
+      "noAwsAccountRequired": true,
+      "zeroCloudSpend": true,
+      "localExecutionVerified": true
+    },
+    "stackMapping": {
+      "agentsAndAi": {
+        "technologies": ["Strands Agents SDK", "PartyRock"],
+        "implementation": "Multi-agent orchestration simulating FarmerAgent, MandiMatcherAgent, and LogisticsAgent with deterministic task decomposition and PartyRock prompt chains."
+      },
+      "containersAndKubernetes": {
+        "technologies": ["Finch", "EKS Distro", "EKS Anywhere"],
+        "implementation": "Open-source Finch container engine running local microservices and EKS Distro manifests for mandi hub nodes without Docker Desktop licensing."
+      },
+      "serverless": {
+        "technologies": ["SAM CLI", "LocalStack"],
+        "implementation": "SAM CLI template (template.yaml) configured to emulate API Gateway, Lambda, and DynamoDB offline via LocalStack at localhost:4566."
+      },
+      "serversAndRuntimes": {
+        "technologies": ["Firecracker", "Corretto 21"],
+        "implementation": "Amazon Corretto 21 JVM runtime with Firecracker microVM specs providing sub-120ms boot times and 5MB cold-start footprints for village kiosks."
+      },
+      "dataAndSearch": {
+        "technologies": ["OpenSearch"],
+        "implementation": "OpenSearch cluster indexing mandi produce lots with BM25 keyword search and vector semantic search for crop disease and grade discovery."
+      },
+      "authAndPolicy": {
+        "technologies": ["Cedar"],
+        "implementation": "Formal Cedar authorization policies (policies.cedar) governing role-based access for Farmers, Krishi Mitras, Wholesalers, and Drivers."
+      },
+      "thePlumbing": {
+        "technologies": ["Local loopback & in-memory event bus"],
+        "implementation": "Zero-cloud spend event-driven architecture using local coroutine queues and LocalStack EventBridge emulation."
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "KrishiFlow",
+  "description": "Digital agricultural procurement and direct distribution platform connecting farmers to mandis and vendors with surplus-priority food waste prevention.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

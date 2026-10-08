@@ -1,0 +1,196 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =========================================================================
+    // HELPER FUNCTIONS FOR ROLE-BASED ACCESS CONTROL (RBAC) & OWNER VALIDATION
+    // =========================================================================
+
+    // Check if user is authenticated with Firebase Auth
+    function isAuthenticated() {
+      return request.auth != null && request.auth.uid != null;
+    }
+
+    // Check if the authenticated user is the document owner
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Fetch the user's registered role from the user collection
+    function getUserRole() {
+      return get(/databases/$(database)/documents/krishiflow_users/$(request.auth.uid)).data.role;
+    }
+
+    // Check if the authenticated user has a specific marketplace role
+    function hasRole(role) {
+      return isAuthenticated() && (
+        request.auth.token.role == role || 
+        getUserRole() == role
+      );
+    }
+
+    function isMandiManagerOrAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.role in ['MANDI_MANAGER', 'ADMIN'] || 
+        getUserRole() in ['MANDI_MANAGER', 'ADMIN']
+      );
+    }
+
+    // =========================================================================
+    // 1. ACTORS & USER PROFILES
+    // =========================================================================
+
+    // User Accounts & Persona Profiles
+    // Each user can read/write only their own profile
+    match /krishiflow_users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId);
+      allow update, delete: if isOwner(userId);
+    }
+
+    // Farmer Directory Profiles
+    // Authenticated users can browse farmer profiles; farmers can update only their own profile
+    match /krishiflow_farmers/{farmerId} {
+      allow read: if true; // Public access allows buyers to verify registered farmers
+      allow create: if isAuthenticated() && (
+        request.resource.data.farmerId == request.auth.uid ||
+        request.resource.data.uid == request.auth.uid ||
+        farmerId == request.auth.uid ||
+        isMandiManagerOrAdmin()
+      );
+      allow update, delete: if isAuthenticated() && (
+        request.auth.uid == farmerId ||
+        resource.data.farmerId == request.auth.uid ||
+        request.auth.uid == resource.data.uid ||
+        isMandiManagerOrAdmin()
+      );
+    }
+
+    // Vendor & Buyer Profiles
+    match /krishiflow_vendors/{vendorId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && (
+        request.resource.data.vendorId == request.auth.uid ||
+        request.resource.data.uid == request.auth.uid ||
+        vendorId == request.auth.uid ||
+        isMandiManagerOrAdmin()
+      );
+      allow update, delete: if isAuthenticated() && (
+        request.auth.uid == vendorId ||
+        resource.data.vendorId == request.auth.uid ||
+        isMandiManagerOrAdmin()
+      );
+    }
+
+    // Mandi Manager Profiles
+    match /krishiflow_mandi_managers/{managerId} {
+      allow read: if isAuthenticated();
+      allow create, update, delete: if isMandiManagerOrAdmin() || isOwner(managerId);
+    }
+
+    // =========================================================================
+    // 2. DOMAIN DATA: PRODUCE POSTS & INVENTORY
+    // =========================================================================
+
+    // Farmer Produce Posts (krishiflow_produce_posts)
+    // Resource validation: Only authenticated farmers can create listings with their own ID
+    match /krishiflow_produce_posts/{postId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && (
+        request.resource.data.farmerId == request.auth.uid ||
+        request.resource.data.farmerPhone == request.auth.token.phone_number ||
+        isMandiManagerOrAdmin()
+      );
+      allow update, delete: if isAuthenticated() && (
+        resource.data.farmerId == request.auth.uid ||
+        resource.data.farmerPhone == request.auth.token.phone_number ||
+        isMandiManagerOrAdmin()
+      );
+    }
+
+    match /krishiflow_produce_batches/{batchId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && (
+        request.resource.data.farmerId == request.auth.uid ||
+        isMandiManagerOrAdmin()
+      );
+      allow update, delete: if isAuthenticated() && (
+        resource.data.farmerId == request.auth.uid ||
+        isMandiManagerOrAdmin()
+      );
+    }
+
+    // =========================================================================
+    // 3. MARKET DEMANDS & PROCUREMENT
+    // =========================================================================
+
+    // Buyer Demands: Resource validation restricts create to matching buyerId
+    match /krishiflow_buyer_demands/{demandId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && (
+        request.resource.data.buyerId == request.auth.uid ||
+        request.resource.data.vendorId == request.auth.uid ||
+        isMandiManagerOrAdmin()
+      );
+      allow update, delete: if isAuthenticated() && (
+        resource.data.buyerId == request.auth.uid ||
+        resource.data.vendorId == request.auth.uid ||
+        isMandiManagerOrAdmin()
+      );
+    }
+
+    // =========================================================================
+    // 4. TRANSACTIONAL DATA: ORDERS & INSTANT PAYOUTS
+    // =========================================================================
+
+    // Order Transactions & UPI Escrow Settlement
+    // Strictly restricted to authenticated participants (Farmer, Buyer, Mandi Manager)
+    match /krishiflow_orders/{orderId} {
+      allow read: if isAuthenticated() && (
+        resource.data.buyerId == request.auth.uid ||
+        resource.data.farmerId == request.auth.uid ||
+        resource.data.farmerPhone == request.auth.token.phone_number ||
+        isMandiManagerOrAdmin()
+      );
+      // Resource validation: Only authenticated buyer can place order under their buyerId
+      allow create: if isAuthenticated() && (
+        request.resource.data.buyerId == request.auth.uid ||
+        isMandiManagerOrAdmin()
+      );
+      // Order status updates (e.g. Dispatched, Delivered, Payout Settled) restricted to participants
+      allow update: if isAuthenticated() && (
+        resource.data.buyerId == request.auth.uid ||
+        resource.data.farmerId == request.auth.uid ||
+        isMandiManagerOrAdmin()
+      );
+      // Orders cannot be deleted once created (audit trail)
+      allow delete: if false;
+    }
+
+    // =========================================================================
+    // 5. APMC MANDI BENCHMARK RATES
+    // =========================================================================
+
+    // Public read so all farmers get transparent market rate intelligence
+    // Write restricted strictly to verified Mandi Managers or Administrators
+    match /krishiflow_mandi_rates/{rateId} {
+      allow read: if true;
+      allow write: if isMandiManagerOrAdmin();
+    }
+
+    // Spoilage Prevention Records
+    match /krishiflow_spoilage_records/{recordId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if isMandiManagerOrAdmin();
+    }
+
+    // =========================================================================
+    // DEFAULT CATCH-ALL: DENY ALL UNMATCHED PATHS
+    // =========================================================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
