@@ -2,7 +2,50 @@
 
 ## 🎯 Track Selection: **Track 03 — Waste & Energy**
 ### Category Focus: *Close the loop on what a city throws away and cut what it burns.*
+### Impact Dimensions: **Air, Water, Waste, and Energy**
 ### AWS Track Alignment: **Build It** (*Open source, on your machine. No AWS account, no card, no bill.*)
+
+---
+
+## 🌟 Alignment with Judging Criteria
+
+### 01. Idea and Impact
+* **The Problem**: Over 30% of harvested agricultural produce rots in intermediate brokers' transit hubs or gets dumped into open municipal landfills. Decomposing organic matter in unmanaged landfills produces **methane ($CH_4$)**, a super-pollutant 28x more potent than $CO_2$ heating the atmosphere, causes toxic smoke from landfill fires that foul **the air people breathe**, contaminates groundwater leachate poisoning **the water they depend on**, and squanders massive amounts of embedded energy.
+* **The Fix**: **KrishiFlow** implements real-time dynamic surplus routing and on-device **Room Database Agricultural Waste & Surplus Logging (`WasteLog`)**. Farmers can log surplus lots with 1 tap to:
+  1. **Donation / Food Rescue Charity**: Diverts edible surplus to community food banks, eradicating hunger while keeping organic waste out of city landfills.
+  2. **On-Farm & Community Composting**: Converts spoilage into rich organic humus, restoring soil organic carbon and improving moisture retention so farms use 20% less irrigation water.
+  3. **Biomass & Biogas Energy**: Channels agricultural residues directly to biomethanation digesters, turning organic waste into clean renewable electricity and biogas that cities and villages run on.
+* **Measurable Impact**: Real-time counter of **kg organic waste diverted**, **kg $CO_2$e avoided**, and **liters of virtual water conserved**.
+
+### 02. Built on AWS
+* **100% Free / LocalStack Open Source**: Built using AWS open-source tooling on developer machines with **$0.00 AWS bill**:
+  * **AWS Cedar Policy Engine** (`policies.cedar`): Formal authorization language defining fine-grained permission controls for Farmers, Food Bank Partners, Agronomy Extension Agents, Wholesalers, and Logistics Drivers.
+  * **AWS SAM CLI & LocalStack**: Serverless Architecture Model emulating AWS API Gateway, Lambda, DynamoDB, and EventBridge locally on `localhost:4566`.
+  * **AWS Finch CLI**: Open-source container engine running microservices on village mandi edge nodes without proprietary licenses.
+  * **Amazon Corretto 21 & Firecracker**: Lightweight open-source JVM and microVM footprint.
+
+### 03. Design and Usability
+* **Built for Where Farmers Are**: High-contrast, tactile Material Design 3 interface with minimum 48dp touch targets, clear bilingual typography (English + Hindi/vernacular), offline-first caching via Android Room SQLite database so farmers can log surplus in remote rural fields without cellular connectivity.
+* **Zero Cognitive Overhead**: 1-tap logging with visual category chips, automatic CO₂ and water conservation calculations, and instant clear status cards. Anyone outside our team can open the app and log surplus in 15 seconds.
+
+### 04. The Execution
+* **Fully Working Android Application**: Built in Kotlin & Jetpack Compose.
+  * Production Room database schema with `WasteLog` entity, `WasteLogDao`, reactive Kotlin `StateFlow` streams, and automated seeding.
+  * Fully interactive **Daily Agricultural Waste & Surplus Log UI** embedded in the Harvest History & Food Waste Analytics view.
+  * Interactive **AWS Hackathon: Build It Lab** featuring live Cedar policy testing, SAM CLI templates, Finch compose definitions, and BYOK AI provider settings.
+  * Zero simulated stubs — fully functioning data persistence and state reconciliation.
+
+### 05. The Demo Video (3-Minute Script Guide)
+* **0:00 - 0:45 (The Crisis & Opportunity)**: Introduce the landfill methane crisis and smallholder post-harvest losses. Show how dumping food harms the air, water, and cities' energy grids.
+* **0:45 - 1:45 (Live KrishiFlow App Walkthrough)**:
+  - Demonstrate pledging a harvest lot.
+  - Open **"Daily Agricultural Surplus & Waste Log"** (`WasteLog` Room database).
+  - Select "Donation to Food Bank" and "On-Farm Composting" — watch the real-time CO₂e prevented and water saved counters update instantly.
+* **1:45 - 2:30 (Where AWS Fits)**:
+  - Tap the **AWS Lab** icon to show the **AWS Cedar Policy Engine** evaluating live permissions for Farmers and FoodBankPartners.
+  - Show the LocalStack SAM template and Finch container stack running at $0 cost on local hardware.
+* **2:30 - 3:00 (The Impact Summary)**:
+  - Close the loop on municipal waste, cut landfill burns, and provide clean energy for cities.
 
 ---
 

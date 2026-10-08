@@ -79,7 +79,31 @@ permit (
     principal.vehicleId == resource.assignedVehicleId
 };
 
-// 5. CRITICAL SAFEGUARD - ZERO MANDI FLOOR UNDERMINING
+// 5. AGRICULTURAL SURPLUS DIVERSION, DONATION & COMPOSTING
+// Farmers can log surplus for donation or composting to avoid landfill dumping
+permit (
+    principal in KrishiRole::"Farmer",
+    action in [
+        KrishiAction::"LogSurplusDonation",
+        KrishiAction::"LogFarmComposting",
+        KrishiAction::"DispatchBiomassEnergy"
+    ],
+    resource is KrishiResource::"WasteLog"
+);
+
+// Verified Food Security Charities & NGOs can claim donation lots
+permit (
+    principal in KrishiRole::"FoodBankPartner",
+    action in [
+        KrishiAction::"ClaimDonationLot",
+        KrishiAction::"ConfirmFoodDelivery"
+    ],
+    resource is KrishiResource::"WasteLog"
+) when {
+    resource.destination == "DONATION_CHARITY"
+};
+
+// 6. CRITICAL SAFEGUARD - ZERO MANDI FLOOR UNDERMINING
 // Never allow arbitrary downward override of minimum support price (MSP)
 // unless Central Admin triggers declared DisasterRelief protocol
 forbid (
@@ -91,3 +115,4 @@ forbid (
     principal.role == "CentralAdmin" &&
     context.reason == "DisasterReliefDeclaration"
 };
+
