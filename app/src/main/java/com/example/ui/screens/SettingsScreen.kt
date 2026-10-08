@@ -87,8 +87,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.data.ai.AiProvider
 import com.example.data.ai.ConnectionTestResult
 import com.example.data.ai.KrishiAiInferenceService
-import com.example.data.datastore.DecryptedApiKeySettings
-import com.example.data.datastore.EncryptedApiKeyDataStore
+import com.example.data.datastore.ApiKeySettings
+import com.example.data.datastore.ApiKeyStore
 import com.example.ui.theme.GreenPrimary
 import kotlinx.coroutines.launch
 
@@ -98,9 +98,9 @@ import kotlinx.coroutines.launch
  * - OpenAI API Key
  * - Anthropic Claude API Key
  * 
- * Directly integrated with EncryptedApiKeyDataStore utility class, persisting
- * all credentials locally using AES-256-GCM hardware encryption so zero API keys
- * are ever stored in plaintext or hardcoded in the codebase.
+ * Directly integrated with ApiKeyStore utility class, persisting
+ * all credentials locally using AES-256-GCM hardware encryption via DataStore
+ * so zero API keys are ever stored in plaintext or hardcoded in the codebase.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -113,9 +113,9 @@ fun SettingsScreen(
     val scrollState = rememberScrollState()
     val inferenceService = remember { KrishiAiInferenceService(context) }
 
-    // Collect reactive decrypted state from EncryptedApiKeyDataStore
-    val dataStoreState by EncryptedApiKeyDataStore.getDecryptedSettingsFlow(context)
-        .collectAsStateWithLifecycle(initialValue = DecryptedApiKeySettings())
+    // Collect reactive decrypted state from ApiKeyStore
+    val dataStoreState by ApiKeyStore.getSettingsFlow(context)
+        .collectAsStateWithLifecycle(initialValue = ApiKeySettings())
 
     // Local mutable state for TextField inputs
     var geminiKeyInput by remember { mutableStateOf("") }
@@ -339,7 +339,7 @@ fun SettingsScreen(
                                 selected = isSelected,
                                 onClick = {
                                     coroutineScope.launch {
-                                        EncryptedApiKeyDataStore.saveActiveProvider(context, provider.id)
+                                        ApiKeyStore.saveActiveProvider(context, provider.id)
                                         statusMessage = "Switched active provider to $label"
                                     }
                                 },
@@ -395,7 +395,7 @@ fun SettingsScreen(
                 isTesting = testingProvider == AiProvider.GEMINI,
                 onSave = {
                     coroutineScope.launch {
-                        EncryptedApiKeyDataStore.saveGeminiKey(context, geminiKeyInput)
+                        ApiKeyStore.saveGeminiKey(context, geminiKeyInput)
                         statusMessage = "Gemini key encrypted & saved to DataStore!"
                         Toast.makeText(context, "Encrypted & Saved to DataStore", Toast.LENGTH_SHORT).show()
                     }
@@ -411,7 +411,7 @@ fun SettingsScreen(
                 },
                 onClear = {
                     coroutineScope.launch {
-                        EncryptedApiKeyDataStore.clearKey(context, AiProvider.GEMINI)
+                        ApiKeyStore.clearKey(context, AiProvider.GEMINI)
                         geminiKeyInput = ""
                         statusMessage = "Gemini key removed from DataStore"
                     }
@@ -436,7 +436,7 @@ fun SettingsScreen(
                 isTesting = testingProvider == AiProvider.OPENAI,
                 onSave = {
                     coroutineScope.launch {
-                        EncryptedApiKeyDataStore.saveOpenAiKey(context, openAiKeyInput)
+                        ApiKeyStore.saveOpenAiKey(context, openAiKeyInput)
                         statusMessage = "OpenAI key encrypted & saved to DataStore!"
                         Toast.makeText(context, "Encrypted & Saved to DataStore", Toast.LENGTH_SHORT).show()
                     }
@@ -452,7 +452,7 @@ fun SettingsScreen(
                 },
                 onClear = {
                     coroutineScope.launch {
-                        EncryptedApiKeyDataStore.clearKey(context, AiProvider.OPENAI)
+                        ApiKeyStore.clearKey(context, AiProvider.OPENAI)
                         openAiKeyInput = ""
                         statusMessage = "OpenAI key removed from DataStore"
                     }
@@ -477,7 +477,7 @@ fun SettingsScreen(
                 isTesting = testingProvider == AiProvider.CLAUDE,
                 onSave = {
                     coroutineScope.launch {
-                        EncryptedApiKeyDataStore.saveClaudeKey(context, claudeKeyInput)
+                        ApiKeyStore.saveClaudeKey(context, claudeKeyInput)
                         statusMessage = "Claude key encrypted & saved to DataStore!"
                         Toast.makeText(context, "Encrypted & Saved to DataStore", Toast.LENGTH_SHORT).show()
                     }
@@ -493,7 +493,7 @@ fun SettingsScreen(
                 },
                 onClear = {
                     coroutineScope.launch {
-                        EncryptedApiKeyDataStore.clearKey(context, AiProvider.CLAUDE)
+                        ApiKeyStore.clearKey(context, AiProvider.CLAUDE)
                         claudeKeyInput = ""
                         statusMessage = "Claude key removed from DataStore"
                     }
@@ -547,9 +547,9 @@ fun SettingsScreen(
             Button(
                 onClick = {
                     coroutineScope.launch {
-                        if (geminiKeyInput.isNotBlank()) EncryptedApiKeyDataStore.saveGeminiKey(context, geminiKeyInput)
-                        if (openAiKeyInput.isNotBlank()) EncryptedApiKeyDataStore.saveOpenAiKey(context, openAiKeyInput)
-                        if (claudeKeyInput.isNotBlank()) EncryptedApiKeyDataStore.saveClaudeKey(context, claudeKeyInput)
+                        if (geminiKeyInput.isNotBlank()) ApiKeyStore.saveGeminiKey(context, geminiKeyInput)
+                        if (openAiKeyInput.isNotBlank()) ApiKeyStore.saveOpenAiKey(context, openAiKeyInput)
+                        if (claudeKeyInput.isNotBlank()) ApiKeyStore.saveClaudeKey(context, claudeKeyInput)
                         statusMessage = "All keys encrypted (AES-256-GCM) & saved into DataStore!"
                         Toast.makeText(context, "Encrypted & Saved All Keys", Toast.LENGTH_SHORT).show()
                     }
@@ -595,7 +595,7 @@ fun SettingsScreen(
                     Button(
                         onClick = {
                             coroutineScope.launch {
-                                EncryptedApiKeyDataStore.purgeAllKeys(context)
+                                ApiKeyStore.purgeAllKeys(context)
                                 geminiKeyInput = ""
                                 openAiKeyInput = ""
                                 claudeKeyInput = ""
