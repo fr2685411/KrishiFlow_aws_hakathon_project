@@ -39,6 +39,7 @@ import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Eco
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PieChart
 import androidx.compose.material.icons.filled.Recycling
@@ -85,6 +86,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -92,6 +94,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import android.widget.Toast
+import com.example.data.export.WasteLogCsvExportResult
+import com.example.data.export.WasteLogCsvExporter
 import com.example.data.model.WasteDestination
 import com.example.data.model.WasteLog
 import com.example.ui.theme.GoldPrimary
@@ -165,6 +170,8 @@ fun AgriculturalSurplusImpactDashboard(
     var selectedChartMode by remember { mutableStateOf(SurplusChartMode.STACKED_BAR) }
     var selectedTimeFilter by remember { mutableStateOf(SurplusTimeFilter.LAST_7_DAYS) }
     var showD3RechartsSpecDialog by remember { mutableStateOf(false) }
+    var exportResult by remember { mutableStateOf<WasteLogCsvExportResult?>(null) }
+    val context = LocalContext.current
 
     // Interactive scrubber crosshair index
     var activeScrubIndex by remember { mutableStateOf<Int?>(null) }
@@ -288,6 +295,25 @@ fun AgriculturalSurplusImpactDashboard(
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(
+                        onClick = {
+                            if (wasteLogs.isEmpty()) {
+                                Toast.makeText(context, "No surplus logs to export", Toast.LENGTH_SHORT).show()
+                            } else {
+                                exportResult = WasteLogCsvExporter.exportToCsv(context, wasteLogs)
+                            }
+                        },
+                        modifier = Modifier
+                            .size(36.dp)
+                            .testTag("surplus_chart_export_csv_btn")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.FileDownload,
+                            contentDescription = "Export WasteLog to CSV",
+                            tint = Color(0xFF10B981),
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                     IconButton(
                         onClick = { showD3RechartsSpecDialog = true },
                         modifier = Modifier
@@ -573,6 +599,14 @@ fun AgriculturalSurplusImpactDashboard(
             dailyDataPoints = dailyDataPoints,
             totalSurplusKg = totalSurplusKg,
             onDismiss = { showD3RechartsSpecDialog = false }
+        )
+    }
+
+    // Modal displaying WasteLog CSV Export Result & Actions
+    exportResult?.let { result ->
+        WasteLogExportDialog(
+            exportResult = result,
+            onDismiss = { exportResult = null }
         )
     }
 }

@@ -32,6 +32,7 @@ import androidx.compose.material.icons.filled.Eco
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Recycling
 import androidx.compose.material.icons.filled.Scale
@@ -62,7 +63,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import android.widget.Toast
+import com.example.data.export.WasteLogCsvExportResult
+import com.example.data.export.WasteLogCsvExporter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -104,6 +109,8 @@ fun DailyAgriculturalWasteLogSection(
     var showLogDialog by remember { mutableStateOf(false) }
     var selectedFilterDestination by remember { mutableStateOf<WasteDestination?>(null) }
     var logToDelete by remember { mutableStateOf<WasteLog?>(null) }
+    var exportResult by remember { mutableStateOf<WasteLogCsvExportResult?>(null) }
+    val context = LocalContext.current
 
     val totalDonatedKg = remember(wasteLogs) {
         wasteLogs.filter { it.destination == WasteDestination.DONATION }.sumOf { it.quantityKg }
@@ -329,26 +336,47 @@ fun DailyAgriculturalWasteLogSection(
                     }
 
                     // =========================================================================
-                    // 3. ACTION BAR: LOG BUTTON + DESTINATION FILTERS
+                    // 3. ACTION BAR: LOG BUTTON, CSV EXPORT + DESTINATION FILTERS
                     // =========================================================================
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Button(
-                            onClick = { showLogDialog = true },
-                            colors = ButtonDefaults.buttonColors(containerColor = GreenPrimary),
-                            shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier.testTag("log_waste_open_dialog_btn")
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
-                            Spacer(Modifier.width(6.dp))
-                            Text("Log Surplus / Waste", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                            Button(
+                                onClick = { showLogDialog = true },
+                                colors = ButtonDefaults.buttonColors(containerColor = GreenPrimary),
+                                shape = RoundedCornerShape(12.dp),
+                                modifier = Modifier.testTag("log_waste_open_dialog_btn")
+                            ) {
+                                Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+                                Spacer(Modifier.width(6.dp))
+                                Text("Log Surplus", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                            }
+
+                            OutlinedButton(
+                                onClick = {
+                                    if (wasteLogs.isEmpty()) {
+                                        Toast.makeText(context, "No surplus logs to export", Toast.LENGTH_SHORT).show()
+                                    } else {
+                                        exportResult = WasteLogCsvExporter.exportToCsv(context, wasteLogs)
+                                    }
+                                },
+                                shape = RoundedCornerShape(12.dp),
+                                modifier = Modifier.testTag("export_waste_logs_csv_btn")
+                            ) {
+                                Icon(Icons.Default.FileDownload, contentDescription = null, modifier = Modifier.size(18.dp))
+                                Spacer(Modifier.width(6.dp))
+                                Text("Export CSV", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                            }
                         }
 
                         Text(
-                            text = "${filteredLogs.size} logs recorded",
+                            text = "${filteredLogs.size} logs",
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -502,6 +530,14 @@ fun DailyAgriculturalWasteLogSection(
                     Text("Cancel")
                 }
             }
+        )
+    }
+
+    // Modal displaying WasteLog CSV Export Result & Actions
+    exportResult?.let { result ->
+        WasteLogExportDialog(
+            exportResult = result,
+            onDismiss = { exportResult = null }
         )
     }
 }

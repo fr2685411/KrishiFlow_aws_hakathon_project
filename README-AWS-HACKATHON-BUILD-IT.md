@@ -42,6 +42,7 @@
   - Demonstrate pledging a harvest lot.
   - Open **"Daily Agricultural Surplus & Waste Log"** (`WasteLog` Room database) and the **Recharts/D3 Impact Dashboard**.
   - Switch chart modes (Stacked Bar, Cumulative Diverted, Destination Donut) and scrub across dates to see live avoided CO₂e and meal equivalence metrics.
+  - Tap **"Export CSV"** to generate an offline, spreadsheet-ready CSV record (`.csv` with UTF-8 BOM, formulas, and diversion breakdowns) stored locally on the farmer's device.
   - Select "Donation to Food Bank" and "On-Farm Composting" — watch the real-time CO₂e prevented and water saved counters update instantly.
 * **1:45 - 2:30 (Where AWS Fits)**:
   - Tap the **AWS Lab** icon to show the **AWS Cedar Policy Engine** evaluating live permissions for Farmers and FoodBankPartners.
@@ -96,6 +97,7 @@
 2. **Submit Batch**: Enter crop type (e.g. Tomatoes, Potatoes, Onions), harvest quantity, grade, and farm location.
 3. **Compare Rates**: View the transparent price comparison showing a **+15% to +18% higher net payout** compared to traditional middleman mandi rates.
 4. **AI Advisory**: Consult the intelligent advisor for harvesting timing, weather warnings, and price forecasting.
+5. **Offline WasteLog CSV Records**: Export daily surplus/diversion logs to local CSV files for physical audits, panchayat records, and tax-exempt NGO donations without needing active internet connectivity.
 
 ### 🛒 B. Buyers, Street Vendors & Informal Recyclers (Vyapar)
 1. **Explore Surplus Queue**: Switch to the **"Surplus Queue"** tab.
