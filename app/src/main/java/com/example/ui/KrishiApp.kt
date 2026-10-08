@@ -517,12 +517,11 @@ fun KrishiApp(
                                 title = {
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                        modifier = Modifier.fillMaxWidth()
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                                     ) {
                                         Box(
                                             modifier = Modifier
-                                                .size(34.dp)
+                                                .size(32.dp)
                                                 .clip(RoundedCornerShape(8.dp))
                                                 .background(Color(0xFF166534)),
                                             contentAlignment = Alignment.Center
@@ -531,18 +530,17 @@ fun KrishiApp(
                                                 imageVector = Icons.Default.Agriculture,
                                                 contentDescription = "KrishiFlow Logo",
                                                 tint = Color.White,
-                                                modifier = Modifier.size(20.dp)
+                                                modifier = Modifier.size(18.dp)
                                             )
                                         }
                                         Column(
-                                            modifier = Modifier.weight(1f, fill = false),
                                             verticalArrangement = Arrangement.Center
                                         ) {
                                             Text(
                                                 text = "KrishiFlow",
                                                 style = MaterialTheme.typography.titleLarge.copy(
                                                     fontWeight = FontWeight.ExtraBold,
-                                                    fontSize = if (screenWidth < 360.dp) 18.sp else 20.sp,
+                                                    fontSize = if (screenWidth < 360.dp) 17.sp else 19.sp,
                                                     letterSpacing = (-0.2).sp
                                                 ),
                                                 color = MaterialTheme.colorScheme.onSurface,
@@ -563,82 +561,87 @@ fun KrishiApp(
                                     }
                                 },
                                 actions = {
-                                    // 0. Settings & BYOK API Key Configuration
-                                    IconButton(
-                                        onClick = { showAppSettingsScreen = true },
-                                        modifier = Modifier.testTag("top_settings_byok_btn")
-                                    ) {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(32.dp)
-                                                .clip(CircleShape)
-                                                .background(GreenPrimary.copy(alpha = 0.15f)),
-                                            contentAlignment = Alignment.Center
+                                    // Adaptive Actions: On tablets/wide screens (>= 600.dp), show quick launcher buttons
+                                    if (screenWidth >= 600.dp) {
+                                        // 0. Settings & BYOK API Key Configuration
+                                        IconButton(
+                                            onClick = { showAppSettingsScreen = true },
+                                            modifier = Modifier.testTag("top_settings_byok_btn")
+                                        ) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(32.dp)
+                                                    .clip(CircleShape)
+                                                    .background(GreenPrimary.copy(alpha = 0.15f)),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Settings,
+                                                    contentDescription = "Settings & API Keys",
+                                                    tint = GreenPrimary,
+                                                    modifier = Modifier.size(20.dp)
+                                                )
+                                            }
+                                        }
+
+                                        // 1. AWS Hackathon: Build It Lab Quick Launcher
+                                        IconButton(
+                                            onClick = { showAwsHackathonBuildItScreen = true },
+                                            modifier = Modifier.testTag("top_aws_hackathon_build_it_btn")
+                                        ) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(32.dp)
+                                                    .clip(CircleShape)
+                                                    .background(Color(0xFFF59E0B).copy(alpha = 0.2f)),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Icon(
+                                                    imageVector = Icons.Default.EmojiEvents,
+                                                    contentDescription = "AWS Hackathon: Build It Track",
+                                                    tint = Color(0xFFD97706),
+                                                    modifier = Modifier.size(20.dp)
+                                                )
+                                            }
+                                        }
+
+                                        // 2. Quick Theme Options Button
+                                        IconButton(
+                                            onClick = { showThemeSelectionDialog = true },
+                                            modifier = Modifier.testTag("top_theme_options_btn")
                                         ) {
                                             Icon(
-                                                imageVector = Icons.Default.Settings,
-                                                contentDescription = "Settings & API Keys",
-                                                tint = GreenPrimary,
-                                                modifier = Modifier.size(20.dp)
+                                                imageVector = Icons.Default.Palette,
+                                                contentDescription = "Theme Options (रंग थीम)",
+                                                tint = MaterialTheme.colorScheme.primary
                                             )
                                         }
                                     }
 
-                                    // 0. AWS Hackathon: Build It Lab Quick Launcher
-                                    IconButton(
-                                        onClick = { showAwsHackathonBuildItScreen = true },
-                                        modifier = Modifier.testTag("top_aws_hackathon_build_it_btn")
-                                    ) {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(32.dp)
-                                                .clip(CircleShape)
-                                                .background(Color(0xFFF59E0B).copy(alpha = 0.2f)),
-                                            contentAlignment = Alignment.Center
+                                    // On medium-to-large displays (>= 440.dp), show Gemini AI Assistant icon button
+                                    if (screenWidth >= 440.dp) {
+                                        IconButton(
+                                            onClick = { showGeminiAssistantDialog = true },
+                                            modifier = Modifier.testTag("top_gemini_ai_assistant_btn")
                                         ) {
-                                            Icon(
-                                                imageVector = Icons.Default.EmojiEvents,
-                                                contentDescription = "AWS Hackathon: Build It Track",
-                                                tint = Color(0xFFD97706),
-                                                modifier = Modifier.size(20.dp)
-                                            )
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(32.dp)
+                                                    .clip(CircleShape)
+                                                    .background(Color(0xFF7C3AED).copy(alpha = 0.15f)),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Icon(
+                                                    imageVector = Icons.Default.AutoAwesome,
+                                                    contentDescription = "Gemini AI Assistant & Voice Control",
+                                                    tint = Color(0xFF7C3AED),
+                                                    modifier = Modifier.size(20.dp)
+                                                )
+                                            }
                                         }
                                     }
 
-                                    // 1. Gemini AI Assistant (Voice & Text Control)
-                                    IconButton(
-                                        onClick = { showGeminiAssistantDialog = true },
-                                        modifier = Modifier.testTag("top_gemini_ai_assistant_btn")
-                                    ) {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(32.dp)
-                                                .clip(CircleShape)
-                                                .background(Color(0xFF7C3AED).copy(alpha = 0.15f)),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Icon(
-                                                imageVector = Icons.Default.AutoAwesome,
-                                                contentDescription = "Gemini AI Assistant & Voice Control",
-                                                tint = Color(0xFF7C3AED),
-                                                modifier = Modifier.size(20.dp)
-                                            )
-                                        }
-                                    }
-
-                                    // 1. Quick Theme Options Button
-                                    IconButton(
-                                        onClick = { showThemeSelectionDialog = true },
-                                        modifier = Modifier.testTag("top_theme_options_btn")
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Default.Palette,
-                                            contentDescription = "Theme Options (रंग थीम)",
-                                            tint = MaterialTheme.colorScheme.primary
-                                        )
-                                    }
-
-                                    // 2. Quick Shopping Cart with Counter Badge
+                                    // Always visible on ALL devices: Quick Shopping Cart with Counter Badge
                                     IconButton(
                                         onClick = { showSustainableShopScreen = true },
                                         modifier = Modifier.testTag("top_sustainable_shop_btn")
@@ -663,7 +666,7 @@ fun KrishiApp(
                                         }
                                     }
 
-                                    // 3. More Options Overflow Menu
+                                    // Always visible on ALL devices: Overflow Menu (contains all quick actions)
                                     Box {
                                         IconButton(
                                             onClick = { showTopBarOverflowMenu = true },
@@ -690,6 +693,15 @@ fun KrishiApp(
                                                 modifier = Modifier.testTag("overflow_settings_btn")
                                             )
                                             DropdownMenuItem(
+                                                text = { Text("🏆 AWS Hackathon: Build It Lab") },
+                                                leadingIcon = { Icon(Icons.Default.EmojiEvents, contentDescription = null, tint = Color(0xFFD97706)) },
+                                                onClick = {
+                                                    showTopBarOverflowMenu = false
+                                                    showAwsHackathonBuildItScreen = true
+                                                },
+                                                modifier = Modifier.testTag("aws_hackathon_overflow_button")
+                                            )
+                                            DropdownMenuItem(
                                                 text = { Text("Theme Options (${appThemeMode.label})") },
                                                 leadingIcon = { Icon(Icons.Default.Palette, contentDescription = null, tint = GreenPrimary) },
                                                 onClick = {
@@ -697,6 +709,15 @@ fun KrishiApp(
                                                     showThemeSelectionDialog = true
                                                 },
                                                 modifier = Modifier.testTag("overflow_theme_btn")
+                                            )
+                                            DropdownMenuItem(
+                                                text = { Text("Gemini AI Assistant & Voice") },
+                                                leadingIcon = { Icon(Icons.Default.AutoAwesome, contentDescription = null, tint = Color(0xFF7C3AED)) },
+                                                onClick = {
+                                                    showTopBarOverflowMenu = false
+                                                    showGeminiAssistantDialog = true
+                                                },
+                                                modifier = Modifier.testTag("overflow_gemini_ai_btn")
                                             )
                                             DropdownMenuItem(
                                                 text = { Text("Switch Role: ${activePersona.shortName}") },
@@ -708,15 +729,6 @@ fun KrishiApp(
                                                 modifier = Modifier.testTag("overflow_switch_role_btn")
                                             )
                                             HorizontalDivider()
-                                             DropdownMenuItem(
-                                                text = { Text("Gemini AI Assistant & Voice") },
-                                                leadingIcon = { Icon(Icons.Default.AutoAwesome, contentDescription = null, tint = Color(0xFF7C3AED)) },
-                                                onClick = {
-                                                    showTopBarOverflowMenu = false
-                                                    showGeminiAssistantDialog = true
-                                                },
-                                                modifier = Modifier.testTag("overflow_gemini_ai_btn")
-                                            )
                                             DropdownMenuItem(
                                                 text = { Text("Cloud Sync (WorkManager)") },
                                                 leadingIcon = { Icon(Icons.Default.Sync, contentDescription = null, tint = GreenPrimary) },
@@ -789,15 +801,6 @@ fun KrishiApp(
                                                     showEcosystemClarificationDialog = true
                                                 },
                                                 modifier = Modifier.testTag("help_clarify_features_button")
-                                            )
-                                            DropdownMenuItem(
-                                                text = { Text("🏆 AWS Hackathon: Build It Lab") },
-                                                leadingIcon = { Icon(Icons.Default.EmojiEvents, contentDescription = null, tint = Color(0xFFD97706)) },
-                                                onClick = {
-                                                    showTopBarOverflowMenu = false
-                                                    showAwsHackathonBuildItScreen = true
-                                                },
-                                                modifier = Modifier.testTag("aws_hackathon_overflow_button")
                                             )
                                             DropdownMenuItem(
                                                 text = { Text("Cloud Stacks: Build vs Ship") },
