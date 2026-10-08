@@ -48,6 +48,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -55,6 +56,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.ProduceBatchEntity
 import com.example.data.model.SpoilagePreventionRecord
+import com.example.ui.components.AgriculturalSurplusImpactDashboard
 import com.example.ui.components.FreshnessGauge
 import com.example.ui.components.QualityGradeBadge
 import com.example.ui.theme.EcoTeal
@@ -86,6 +88,16 @@ fun SurplusPriorityScreen(
                 rescuedKg = uiState.totalRescuedKg,
                 lossPreventedRupees = uiState.totalLossPreventedRupees,
                 co2SavedKg = uiState.totalCo2SavedKg
+            )
+        }
+
+        // Daily Agricultural Surplus & Waste Reduction Impact Dashboard (Recharts / D3)
+        item {
+            AgriculturalSurplusImpactDashboard(
+                wasteLogs = uiState.wasteLogs,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("surplus_priority_screen_impact_dashboard")
             )
         }
 

@@ -31,7 +31,8 @@
 ### 04. The Execution
 * **Fully Working Android Application**: Built in Kotlin & Jetpack Compose.
   * Production Room database schema with `WasteLog` entity, `WasteLogDao`, reactive Kotlin `StateFlow` streams, and automated seeding.
-  * Fully interactive **Daily Agricultural Waste & Surplus Log UI** embedded in the Harvest History & Food Waste Analytics view.
+  * **Composable Recharts & D3 Dashboard Component** (`AgriculturalSurplusImpactDashboard.kt`): Interactive multi-mode visualizer supporting Stacked Bars (`Recharts <BarChart>`), Cumulative Impact Areas (`Recharts <AreaChart>` with D3 monotone spline smoothing), and Destination Donut distribution (`d3.arc`). Includes interactive scrubber crosshairs, tooltips, and a live Recharts/D3 specification viewer.
+  * Fully interactive **Daily Agricultural Waste & Surplus Log UI** embedded in Harvest History & Surplus Priority screens.
   * Interactive **AWS Hackathon: Build It Lab** featuring live Cedar policy testing, SAM CLI templates, Finch compose definitions, and BYOK AI provider settings.
   * Zero simulated stubs — fully functioning data persistence and state reconciliation.
 
@@ -39,7 +40,8 @@
 * **0:00 - 0:45 (The Crisis & Opportunity)**: Introduce the landfill methane crisis and smallholder post-harvest losses. Show how dumping food harms the air, water, and cities' energy grids.
 * **0:45 - 1:45 (Live KrishiFlow App Walkthrough)**:
   - Demonstrate pledging a harvest lot.
-  - Open **"Daily Agricultural Surplus & Waste Log"** (`WasteLog` Room database).
+  - Open **"Daily Agricultural Surplus & Waste Log"** (`WasteLog` Room database) and the **Recharts/D3 Impact Dashboard**.
+  - Switch chart modes (Stacked Bar, Cumulative Diverted, Destination Donut) and scrub across dates to see live avoided CO₂e and meal equivalence metrics.
   - Select "Donation to Food Bank" and "On-Farm Composting" — watch the real-time CO₂e prevented and water saved counters update instantly.
 * **1:45 - 2:30 (Where AWS Fits)**:
   - Tap the **AWS Lab** icon to show the **AWS Cedar Policy Engine** evaluating live permissions for Farmers and FoodBankPartners.

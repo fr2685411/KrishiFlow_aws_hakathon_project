@@ -50,6 +50,7 @@ import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.data.export.HarvestReportPdfGenerator
+import com.example.ui.components.AgriculturalSurplusImpactDashboard
 import com.example.ui.components.DailyAgriculturalWasteLogSection
 import com.example.ui.components.FoodWasteAnalyticsModule
 import com.example.ui.components.HarvestYieldTrendDashboard
@@ -396,7 +397,19 @@ fun HarvestHistoryLogScreen(
             }
 
             // =========================================================================
-            // 1C. DAILY AGRICULTURAL SURPLUS & WASTE LOG (ROOM DATABASE PERSISTENCE)
+            // 1C. RECHARTS & D3 DAILY AGRICULTURAL SURPLUS IMPACT DASHBOARD
+            // =========================================================================
+            item {
+                AgriculturalSurplusImpactDashboard(
+                    wasteLogs = uiState.wasteLogs,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("surplus_waste_impact_chart_dashboard")
+                )
+            }
+
+            // =========================================================================
+            // 1D. DAILY AGRICULTURAL SURPLUS & WASTE LOG (ROOM DATABASE PERSISTENCE)
             // =========================================================================
             item {
                 DailyAgriculturalWasteLogSection(
