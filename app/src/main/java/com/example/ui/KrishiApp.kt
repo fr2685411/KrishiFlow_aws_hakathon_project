@@ -135,6 +135,7 @@ import com.example.ui.components.FarmerProducePostDialog
 import com.example.ui.screens.AddNewBatchDialog
 import com.example.ui.screens.AppSettingsScreen
 import com.example.ui.screens.CropPlanningAdvisorScreen
+import com.example.ui.screens.SettingsScreen
 import com.example.ui.screens.HarvestHistoryLogScreen
 import com.example.ui.screens.HarvestYieldCalculatorScreen
 import com.example.ui.screens.HubOperationsScreen
@@ -299,12 +300,8 @@ fun KrishiApp(
     }
 
     if (showAppSettingsScreen) {
-        AppSettingsScreen(
-            viewModel = viewModel,
-            onNavigateBack = { showAppSettingsScreen = false },
-            onOpenThemeSelector = { showThemeSelectionDialog = true },
-            onOpenAwsHackathonLab = { showAwsHackathonBuildItScreen = true },
-            onOpenCloudArchitecture = { showCloudArchitectureDialog = true }
+        SettingsScreen(
+            onNavigateBack = { showAppSettingsScreen = false }
         )
     } else if (showAwsHackathonBuildItScreen) {
         AwsHackathonBuildItScreen(
