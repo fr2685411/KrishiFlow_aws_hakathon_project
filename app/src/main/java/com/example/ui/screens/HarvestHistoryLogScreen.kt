@@ -50,6 +50,7 @@ import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.data.export.HarvestReportPdfGenerator
+import com.example.ui.components.DailyAgriculturalWasteLogSection
 import com.example.ui.components.FoodWasteAnalyticsModule
 import com.example.ui.components.HarvestYieldTrendDashboard
 import androidx.compose.material3.AlertDialog
@@ -391,6 +392,31 @@ fun HarvestHistoryLogScreen(
                     activeBatches = uiState.batches,
                     onNavigateToSurplusScreen = { onNavigateBack() },
                     modifier = Modifier.fillMaxWidth().testTag("food_waste_analytics_card")
+                )
+            }
+
+            // =========================================================================
+            // 1C. DAILY AGRICULTURAL SURPLUS & WASTE LOG (ROOM DATABASE PERSISTENCE)
+            // =========================================================================
+            item {
+                DailyAgriculturalWasteLogSection(
+                    wasteLogs = uiState.wasteLogs,
+                    onLogWaste = { cropName, category, qty, dest, reason, partner, estValue, notes ->
+                        viewModel.logAgriculturalWaste(
+                            cropName = cropName,
+                            category = category,
+                            quantityKg = qty,
+                            destination = dest,
+                            reason = reason,
+                            destinationPartner = partner,
+                            estimatedValueRupees = estValue,
+                            notes = notes
+                        )
+                    },
+                    onDeleteLog = { id ->
+                        viewModel.deleteWasteLog(id)
+                    },
+                    modifier = Modifier.fillMaxWidth().testTag("daily_waste_log_section")
                 )
             }
 

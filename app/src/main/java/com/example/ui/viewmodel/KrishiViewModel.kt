@@ -26,6 +26,9 @@ import com.example.data.model.ProduceBatchEntity
 import com.example.data.model.QualityGrade
 import com.example.data.model.SpoilagePreventionRecord
 import com.example.data.model.StorageCondition
+import com.example.data.model.WasteDestination
+import com.example.data.model.WasteLog
+import com.example.data.model.WasteReason
 import com.example.data.model.FarmerProducePost
 import com.example.data.model.FarmerProfile
 import com.example.data.model.VendorProfile
@@ -104,7 +107,8 @@ data class KrishiUiState(
     val queuedInventory: List<OfflineInventoryQueueEntity> = emptyList(),
     val pendingOfflineSyncCount: Int = 0,
     val workManagerSyncState: String? = null,
-    val lastWorkManagerSyncTime: Long? = null
+    val lastWorkManagerSyncTime: Long? = null,
+    val wasteLogs: List<WasteLog> = emptyList()
 )
 
 private data class RepoData(
@@ -115,7 +119,8 @@ private data class RepoData(
     val spoilage: List<SpoilagePreventionRecord> = emptyList(),
     val harvestLogs: List<HarvestHistoryLogEntity> = emptyList(),
     val queuedInventory: List<OfflineInventoryQueueEntity> = emptyList(),
-    val pendingSyncCount: Int = 0
+    val pendingSyncCount: Int = 0,
+    val wasteLogs: List<WasteLog> = emptyList()
 )
 
 private data class FilterData(
@@ -718,12 +723,14 @@ class KrishiViewModel(application: Application) : AndroidViewModel(application) 
             baseRepoFlow,
             repository.allHarvestLogs,
             repository.allQueuedInventory,
-            repository.pendingQueueCount
-        ) { repo, logs, queued, pendingCount ->
+            repository.pendingQueueCount,
+            repository.allWasteLogs
+        ) { repo, logs, queued, pendingCount, waste ->
             repo.copy(
                 harvestLogs = logs,
                 queuedInventory = queued,
-                pendingSyncCount = pendingCount
+                pendingSyncCount = pendingCount,
+                wasteLogs = waste
             )
         }
 
@@ -806,7 +813,8 @@ class KrishiViewModel(application: Application) : AndroidViewModel(application) 
                 queuedInventory = repo.queuedInventory,
                 pendingOfflineSyncCount = repo.pendingSyncCount,
                 workManagerSyncState = _workManagerSyncState.value,
-                lastWorkManagerSyncTime = _lastWorkManagerSyncTime.value
+                lastWorkManagerSyncTime = _lastWorkManagerSyncTime.value,
+                wasteLogs = repo.wasteLogs
             )
         }.stateIn(
             viewModelScope,
@@ -1506,6 +1514,43 @@ class KrishiViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val profile = userRepository.getUserProfile(userId).getOrNull()
             onComplete(profile)
+        }
+    }
+
+    // =========================================================================
+    // AGRICULTURAL SURPLUS & WASTE MANAGEMENT (ROOM PERSISTENCE)
+    // =========================================================================
+
+    fun logAgriculturalWaste(
+        cropName: String,
+        category: CropCategory,
+        quantityKg: Double,
+        destination: WasteDestination,
+        reason: WasteReason = WasteReason.MARKET_SURPLUS,
+        destinationPartner: String = "",
+        estimatedValueRupees: Double = 0.0,
+        notes: String = ""
+    ) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+            repository.logAgriculturalWaste(
+                cropName = cropName,
+                category = category,
+                quantityKg = quantityKg,
+                destination = destination,
+                reason = reason,
+                destinationPartner = destinationPartner,
+                estimatedValueRupees = estimatedValueRupees,
+                notes = notes
+            )
+            val actionLabel = if (destination == WasteDestination.DONATION) "earmarked for charity donation" else "diverted for composting"
+            _userNotice.value = "Logged ${String.format(java.util.Locale.getDefault(), "%.1f", quantityKg)} kg of $cropName $actionLabel!"
+        }
+    }
+
+    fun deleteWasteLog(logId: Long) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+            repository.deleteWasteLog(logId)
+            _userNotice.value = "Agricultural surplus/waste log removed."
         }
     }
 }

@@ -9,6 +9,7 @@ import com.example.data.local.OfflineInventoryQueueDao
 import com.example.data.local.OrderTransactionDao
 import com.example.data.local.ProduceBatchDao
 import com.example.data.local.SpoilagePreventionDao
+import com.example.data.local.WasteLogDao
 import com.example.data.model.BatchStatus
 import com.example.data.model.BuyerDemandEntity
 import com.example.data.model.BuyerType
@@ -22,6 +23,9 @@ import com.example.data.model.ProduceBatchEntity
 import com.example.data.model.QualityGrade
 import com.example.data.model.SpoilagePreventionRecord
 import com.example.data.model.StorageCondition
+import com.example.data.model.WasteDestination
+import com.example.data.model.WasteLog
+import com.example.data.model.WasteReason
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import java.util.UUID
@@ -36,6 +40,7 @@ class KrishiRepository(
     private val spoilageDao: SpoilagePreventionDao = database.spoilagePreventionDao()
     private val harvestLogDao: HarvestHistoryLogDao = database.harvestHistoryLogDao()
     private val queueDao: OfflineInventoryQueueDao = database.offlineInventoryQueueDao()
+    private val wasteLogDao: WasteLogDao = database.wasteLogDao()
 
     val allBatches: Flow<List<ProduceBatchEntity>> = batchDao.getAllBatches()
     val activeBatches: Flow<List<ProduceBatchEntity>> = batchDao.getActiveBatches()
@@ -47,6 +52,10 @@ class KrishiRepository(
     val allHarvestLogs: Flow<List<HarvestHistoryLogEntity>> = harvestLogDao.getAllLogs()
     val allQueuedInventory: Flow<List<OfflineInventoryQueueEntity>> = queueDao.getAllQueuedItems()
     val pendingQueueCount: Flow<Int> = queueDao.getPendingSyncCountFlow()
+    val allWasteLogs: Flow<List<WasteLog>> = wasteLogDao.getAllLogs()
+    val totalDonatedKg: Flow<Double> = wasteLogDao.getTotalDonatedKg()
+    val totalCompostedKg: Flow<Double> = wasteLogDao.getTotalCompostedKg()
+    val totalWasteLoggedKg: Flow<Double> = wasteLogDao.getTotalWasteLoggedKg()
 
     suspend fun seedInitialDataIfEmpty() {
         try {
@@ -533,6 +542,59 @@ class KrishiRepository(
             )
             harvestLogDao.insertAllLogs(sampleLogs)
         }
+
+        val existingWasteLogs = wasteLogDao.getAllLogs().firstOrNull()
+        if (existingWasteLogs.isNullOrEmpty()) {
+            val dayMs = 24 * 3600 * 1000L
+            val now = System.currentTimeMillis()
+            val sampleWaste = listOf(
+                WasteLog(
+                    cropName = "Tomato (Hybrid)",
+                    category = CropCategory.VEGETABLES,
+                    quantityKg = 120.0,
+                    destination = WasteDestination.DONATION,
+                    reason = WasteReason.MARKET_SURPLUS,
+                    destinationPartner = "Roti Bank & Akshaya Patra Kitchen",
+                    estimatedValueRupees = 2400.0,
+                    notes = "Ripe harvest surplus donated to community meal kitchen instead of mandi discard",
+                    logDateTimestamp = now - 1 * dayMs
+                ),
+                WasteLog(
+                    cropName = "Cabbage & Cauliflower Leaves",
+                    category = CropCategory.VEGETABLES,
+                    quantityKg = 85.0,
+                    destination = WasteDestination.COMPOSTING,
+                    reason = WasteReason.HARVEST_DAMAGE,
+                    destinationPartner = "Farm Aerobic Vermicompost Unit",
+                    estimatedValueRupees = 425.0,
+                    notes = "Outer leaves and field trimmings shredded for organic bio-fertilizer bed",
+                    logDateTimestamp = now - 2 * dayMs
+                ),
+                WasteLog(
+                    cropName = "Alphonso Mango",
+                    category = CropCategory.FRUITS,
+                    quantityKg = 60.0,
+                    destination = WasteDestination.DONATION,
+                    reason = WasteReason.OVER_RIPE,
+                    destinationPartner = "Navjeevan Children's Home",
+                    estimatedValueRupees = 4800.0,
+                    notes = "Soft table-grade ripe mangoes expedited to local children orphanage",
+                    logDateTimestamp = now - 4 * dayMs
+                ),
+                WasteLog(
+                    cropName = "Red Onion Trimmings",
+                    category = CropCategory.VEGETABLES,
+                    quantityKg = 110.0,
+                    destination = WasteDestination.COMPOSTING,
+                    reason = WasteReason.STORAGE_LOSS,
+                    destinationPartner = "Gram Panchayat Community Compost Pit",
+                    estimatedValueRupees = 1320.0,
+                    notes = "Sprouted outer layers sorted during grading, transferred to compost",
+                    logDateTimestamp = now - 5 * dayMs
+                )
+            )
+            wasteLogDao.insertAll(sampleWaste)
+        }
     } catch (e: Exception) {
         Log.e("KrishiRepository", "Error seeding initial database data: ${e.message}", e)
     }
@@ -758,5 +820,44 @@ class KrishiRepository(
 
     suspend fun clearCompletedSyncItems() {
         queueDao.clearCompletedSyncedItems()
+    }
+
+    // =========================================================================
+    // AGRICULTURAL SURPLUS & WASTE LOGGING (ROOM PERSISTENCE)
+    // =========================================================================
+
+    suspend fun logAgriculturalWaste(
+        cropName: String,
+        category: CropCategory,
+        quantityKg: Double,
+        destination: WasteDestination,
+        reason: WasteReason = WasteReason.MARKET_SURPLUS,
+        destinationPartner: String = "",
+        estimatedValueRupees: Double = 0.0,
+        notes: String = "",
+        logDateTimestamp: Long = System.currentTimeMillis()
+    ): Long {
+        val entity = WasteLog(
+            cropName = cropName.trim(),
+            category = category,
+            quantityKg = quantityKg,
+            destination = destination,
+            reason = reason,
+            destinationPartner = destinationPartner.trim(),
+            estimatedValueRupees = estimatedValueRupees,
+            notes = notes.trim(),
+            logDateTimestamp = logDateTimestamp
+        )
+        return wasteLogDao.insertLog(entity)
+    }
+
+    suspend fun insertWasteLog(log: WasteLog): Long = wasteLogDao.insertLog(log)
+
+    suspend fun deleteWasteLog(logId: Long) {
+        wasteLogDao.deleteLogById(logId)
+    }
+
+    suspend fun updateWasteLog(log: WasteLog) {
+        wasteLogDao.updateLog(log)
     }
 }

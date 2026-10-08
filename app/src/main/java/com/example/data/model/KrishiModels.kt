@@ -250,4 +250,24 @@ class KrishiConverters {
     } catch (_: Exception) {
         OfflineActionType.SCAN_HARVEST_BATCH
     }
+
+    @TypeConverter
+    fun fromWasteDestination(value: WasteDestination): String = value.name
+
+    @TypeConverter
+    fun toWasteDestination(value: String): WasteDestination = try {
+        WasteDestination.valueOf(value)
+    } catch (_: Exception) {
+        WasteDestination.DONATION
+    }
+
+    @TypeConverter
+    fun fromWasteReason(value: WasteReason): String = value.name
+
+    @TypeConverter
+    fun toWasteReason(value: String): WasteReason = try {
+        WasteReason.valueOf(value)
+    } catch (_: Exception) {
+        WasteReason.MARKET_SURPLUS
+    }
 }

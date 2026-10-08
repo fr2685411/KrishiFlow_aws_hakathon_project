@@ -19,6 +19,7 @@ import com.example.data.model.OfflineInventoryQueueEntity
 import com.example.data.model.OrderTransactionEntity
 import com.example.data.model.ProduceBatchEntity
 import com.example.data.model.SpoilagePreventionRecord
+import com.example.data.model.WasteLog
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -131,9 +132,10 @@ interface SpoilagePreventionDao {
         MandiRateEntity::class,
         SpoilagePreventionRecord::class,
         HarvestHistoryLogEntity::class,
-        OfflineInventoryQueueEntity::class
+        OfflineInventoryQueueEntity::class,
+        WasteLog::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(KrishiConverters::class)
@@ -145,6 +147,7 @@ abstract class KrishiDatabase : RoomDatabase() {
     abstract fun mandiRateDao(): MandiRateDao
     abstract fun spoilagePreventionDao(): SpoilagePreventionDao
     abstract fun offlineInventoryQueueDao(): OfflineInventoryQueueDao
+    abstract fun wasteLogDao(): WasteLogDao
 
     companion object {
         @Volatile
