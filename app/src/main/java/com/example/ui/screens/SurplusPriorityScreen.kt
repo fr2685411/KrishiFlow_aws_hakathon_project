@@ -511,7 +511,7 @@ fun SurplusBatchCard(
                     ),
                     shape = RoundedCornerShape(8.dp),
                     contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
-                    modifier = Modifier.height(34.dp)
+                    modifier = Modifier.defaultMinSize(minHeight = 34.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Campaign,
@@ -545,7 +545,11 @@ fun RescueLogItem(record: SpoilagePreventionRecord) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp)
+            ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -553,7 +557,10 @@ fun RescueLogItem(record: SpoilagePreventionRecord) {
                     Text(
                         text = record.cropName,
                         style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false)
                     )
                     Surface(
                         shape = RoundedCornerShape(4.dp),
@@ -566,14 +573,17 @@ fun RescueLogItem(record: SpoilagePreventionRecord) {
                                 color = GreenPrimary,
                                 fontSize = 10.sp
                             ),
-                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
+                            maxLines = 1
                         )
                     }
                 }
                 Text(
                     text = "Sold to: ${record.buyerName} (-${record.discountAppliedPercent}% flash sale)",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
             Column(horizontalAlignment = Alignment.End) {
@@ -582,12 +592,16 @@ fun RescueLogItem(record: SpoilagePreventionRecord) {
                     style = MaterialTheme.typography.labelLarge.copy(
                         fontWeight = FontWeight.Bold,
                         color = GreenPrimary
-                    )
+                    ),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = "-${record.co2SavedKg.toInt()} kg CO2e",
                     style = MaterialTheme.typography.labelSmall,
-                    color = EcoTeal
+                    color = EcoTeal,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }

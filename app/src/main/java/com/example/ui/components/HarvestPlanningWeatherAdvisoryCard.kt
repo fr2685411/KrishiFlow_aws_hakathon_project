@@ -55,6 +55,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.weather.DailyAgronomyForecast
@@ -124,7 +125,7 @@ fun HarvestPlanningWeatherAdvisoryCard(
                         )
                     }
 
-                    Column {
+                    Column(modifier = Modifier.weight(1f)) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -132,7 +133,10 @@ fun HarvestPlanningWeatherAdvisoryCard(
                             Text(
                                 text = "Harvest Planning Advisory",
                                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = MaterialTheme.colorScheme.onSurface,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f, fill = false)
                             )
                             Surface(
                                 shape = RoundedCornerShape(4.dp),
@@ -145,14 +149,17 @@ fun HarvestPlanningWeatherAdvisoryCard(
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 9.sp
                                     ),
-                                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
+                                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
+                                    maxLines = 1
                                 )
                             }
                         }
                         Text(
                             text = "${weatherData.locationName} • Open-Meteo Meteorological Feed",
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }
@@ -216,22 +223,27 @@ fun HarvestPlanningWeatherAdvisoryCard(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Row(
+                            modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Text(
-                                text = "⏱️ Safe Window: ${weatherData.harvestAdvice.safeWindowDays} Days",
+                                text = "⏱️ Safe: ${weatherData.harvestAdvice.safeWindowDays} Days",
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontWeight = FontWeight.Bold,
                                     color = harvestActionColor
-                                )
+                                ),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                             Text(
-                                text = "💧 Rain Prob: ${weatherData.rainProbabilityToday}%",
+                                text = "💧 Rain: ${weatherData.rainProbabilityToday}%",
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontWeight = FontWeight.Medium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
+                                ),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }

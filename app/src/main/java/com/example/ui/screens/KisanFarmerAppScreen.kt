@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -343,7 +344,8 @@ fun KisanFarmerAppScreen(
                             shape = RoundedCornerShape(10.dp),
                             modifier = Modifier
                                 .weight(1f)
-                                .testTag("kisan_open_gemini_chat_btn")
+                                .testTag("kisan_open_gemini_chat_btn"),
+                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 6.dp)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.AutoAwesome,
@@ -356,7 +358,9 @@ fun KisanFarmerAppScreen(
                                 text = "Ask KrishiMitra AI",
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White,
-                                fontSize = 12.5.sp
+                                fontSize = 12.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
 
@@ -364,13 +368,15 @@ fun KisanFarmerAppScreen(
                             onClick = onOpenGeminiAssistant,
                             shape = RoundedCornerShape(10.dp),
                             border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF7C3AED)),
-                            modifier = Modifier.testTag("kisan_configure_gemini_key_btn")
+                            modifier = Modifier.testTag("kisan_configure_gemini_key_btn"),
+                            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
                         ) {
                             Text(
                                 text = "🔑 API Key",
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF7C3AED),
-                                fontSize = 12.sp
+                                fontSize = 12.sp,
+                                maxLines = 1
                             )
                         }
                     }
@@ -495,11 +501,18 @@ fun KisanFarmerAppScreen(
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
                         .weight(1f)
-                        .testTag("kisan_view_maps_btn")
+                        .testTag("kisan_view_maps_btn"),
+                    contentPadding = PaddingValues(horizontal = 6.dp, vertical = 6.dp)
                 ) {
                     Icon(imageVector = Icons.Default.Map, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("नज़दीकी मंडी व रूट (Maps)", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "नज़दीकी मंडी (Maps)",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
 
                 OutlinedButton(
@@ -507,11 +520,18 @@ fun KisanFarmerAppScreen(
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
                         .weight(1f)
-                        .testTag("kisan_how_it_works_btn")
+                        .testTag("kisan_how_it_works_btn"),
+                    contentPadding = PaddingValues(horizontal = 6.dp, vertical = 6.dp)
                 ) {
                     Icon(imageVector = Icons.AutoMirrored.Filled.HelpOutline, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("मदद व जानकारी (Guide)", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "मदद गाइड (Guide)",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
             }
         }
@@ -553,7 +573,10 @@ fun KisanFarmerAppScreen(
                                 )
                             }
                         }
-                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.spacedBy(2.dp)
+                        ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -561,7 +584,10 @@ fun KisanFarmerAppScreen(
                                 Text(
                                     text = "फसल नियोजन एवं प्रकृति चक्र",
                                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier.weight(1f, fill = false)
                                 )
                                 Surface(
                                     shape = RoundedCornerShape(4.dp),
@@ -574,7 +600,8 @@ fun KisanFarmerAppScreen(
                                             fontWeight = FontWeight.Bold,
                                             fontSize = 9.sp
                                         ),
-                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
+                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
+                                        maxLines = 1
                                     )
                                 }
                             }
@@ -582,12 +609,16 @@ fun KisanFarmerAppScreen(
                                 text = "Crop Advisory, Yield Estimation & Risk Mitigation",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = GreenPrimary,
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.SemiBold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                             Text(
                                 text = "मिट्टी, ऋतु और फसल चक्र अनुसार उत्पादन अनुमान व जैविक समाधान।",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }
@@ -639,7 +670,10 @@ fun KisanFarmerAppScreen(
                                 )
                             }
                         }
-                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.spacedBy(2.dp)
+                        ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -647,7 +681,10 @@ fun KisanFarmerAppScreen(
                                 Text(
                                     text = "जैविक कृषि दुकान (Sustainable Shop)",
                                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier.weight(1f, fill = false)
                                 )
                                 Surface(
                                     shape = RoundedCornerShape(4.dp),
@@ -660,7 +697,8 @@ fun KisanFarmerAppScreen(
                                             fontWeight = FontWeight.Bold,
                                             fontSize = 9.sp
                                         ),
-                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
+                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
+                                        maxLines = 1
                                     )
                                 }
                             }
@@ -668,12 +706,16 @@ fun KisanFarmerAppScreen(
                                 text = "Buy Certified Seeds, Bio-Pesticides, Trichoderma & Vermicompost",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = Color(0xFF0284C7),
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.SemiBold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                             Text(
                                 text = "मधुमक्खी व मित्रकीट सुरक्षित जैविक इनपुट्स सीधे खेत तक डिलीवरी।",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }
@@ -725,7 +767,10 @@ fun KisanFarmerAppScreen(
                                 )
                             }
                         }
-                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.spacedBy(2.dp)
+                        ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -733,7 +778,10 @@ fun KisanFarmerAppScreen(
                                 Text(
                                     text = "फसल उपज कैलकुलेटर",
                                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier.weight(1f, fill = false)
                                 )
                                 Surface(
                                     shape = RoundedCornerShape(4.dp),
@@ -746,7 +794,8 @@ fun KisanFarmerAppScreen(
                                             fontWeight = FontWeight.Bold,
                                             fontSize = 9.sp
                                         ),
-                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
+                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
+                                        maxLines = 1
                                     )
                                 }
                             }
@@ -754,12 +803,16 @@ fun KisanFarmerAppScreen(
                                 text = "Harvest Yield, Market Revenue & Input Planning",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = GoldPrimary,
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.SemiBold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                             Text(
                                 text = "जमीन, फसल व मिट्टी अनुसार अनुमानित उपज, मंडी आय व बीज आवश्यकता का सटीक हिसाब।",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }
@@ -783,7 +836,10 @@ fun KisanFarmerAppScreen(
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.CloudDone,
@@ -792,9 +848,11 @@ fun KisanFarmerAppScreen(
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = "मेरी लिस्टेड उपज / My Produce (Firestore)",
+                        text = "मेरी लिस्टेड उपज / My Produce",
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
@@ -812,7 +870,8 @@ fun KisanFarmerAppScreen(
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
                             ),
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            maxLines = 1
                         )
                     }
 
@@ -834,7 +893,8 @@ fun KisanFarmerAppScreen(
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontWeight = FontWeight.Bold,
                                     color = GreenPrimary
-                                )
+                                ),
+                                maxLines = 1
                             )
                         }
                     }
@@ -1094,7 +1154,7 @@ fun KisanFarmerAppScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(520.dp)
+                        .heightIn(min = 280.dp, max = 440.dp)
                 ) {
                     RegionalLogisticsMapScreen(uiState = uiState)
                 }

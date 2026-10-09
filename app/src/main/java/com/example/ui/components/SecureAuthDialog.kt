@@ -73,6 +73,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.auth.AuthUiState
@@ -183,6 +184,9 @@ fun SecureAuthDialog(
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Row(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .padding(end = 8.dp),
                                         verticalAlignment = Alignment.CenterVertically,
                                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                                     ) {
@@ -192,11 +196,13 @@ fun SecureAuthDialog(
                                             tint = GreenPrimary,
                                             modifier = Modifier.size(18.dp)
                                         )
-                                        Column {
+                                        Column(modifier = Modifier.weight(1f)) {
                                             Text(
                                                 text = authState.user.displayName,
                                                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                                color = Color(0xFF14532D)
+                                                color = Color(0xFF14532D),
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis
                                             )
                                             Text(
                                                 text = if (authState.user.phoneNumber.isNotBlank())
@@ -204,7 +210,9 @@ fun SecureAuthDialog(
                                                 else
                                                     "✉️ ${authState.user.email} • ${authState.user.authProvider}",
                                                 style = MaterialTheme.typography.labelSmall,
-                                                color = Color(0xFF166534)
+                                                color = Color(0xFF166534),
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis
                                             )
                                         }
                                     }
@@ -213,10 +221,10 @@ fun SecureAuthDialog(
                                         onClick = { viewModel.signOut() },
                                         shape = RoundedCornerShape(8.dp),
                                         colors = ButtonDefaults.outlinedButtonColors(contentColor = SpoilageRed),
-                                        modifier = Modifier.height(30.dp),
+                                        modifier = Modifier.defaultMinSize(minHeight = 30.dp),
                                         contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 2.dp)
                                     ) {
-                                        Text("Sign Out", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                        Text("Sign Out", fontSize = 11.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                                     }
                                 }
                             }

@@ -192,17 +192,28 @@ fun FoodWasteAnalyticsModule(
                     Column(modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                             Icon(Icons.Default.Scale, contentDescription = null, tint = SpoilageRed, modifier = Modifier.size(14.dp))
-                            Text("Unsold Surplus", style = MaterialTheme.typography.labelSmall, color = SpoilageRed)
+                            Text(
+                                text = "Unsold Surplus",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = SpoilageRed,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f)
+                            )
                         }
                         Text(
                             text = "${report.totalHistoricalUnsoldKg.toInt()} kg",
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            color = SpoilageRed
+                            color = SpoilageRed,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         Text(
                             text = "${report.overallWastePercentage}% of harvest",
                             style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.5.sp),
-                            color = Color(0xFF991B1B)
+                            color = Color(0xFF991B1B),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }
@@ -217,17 +228,28 @@ fun FoodWasteAnalyticsModule(
                     Column(modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                             Icon(Icons.Default.CurrencyRupee, contentDescription = null, tint = GoldPrimary, modifier = Modifier.size(14.dp))
-                            Text("Loss at Risk", style = MaterialTheme.typography.labelSmall, color = GoldPrimary)
+                            Text(
+                                text = "Loss at Risk",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = GoldPrimary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f)
+                            )
                         }
                         Text(
                             text = "₹${report.totalFinancialLossRupees.toInt()}",
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            color = GoldPrimary
+                            color = GoldPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         Text(
                             text = "Preventable Revenue",
                             style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.5.sp),
-                            color = Color(0xFF854D0E)
+                            color = Color(0xFF854D0E),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }
@@ -242,17 +264,28 @@ fun FoodWasteAnalyticsModule(
                     Column(modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                             Icon(Icons.Default.Eco, contentDescription = null, tint = GreenPrimary, modifier = Modifier.size(14.dp))
-                            Text("CO2 Footprint", style = MaterialTheme.typography.labelSmall, color = GreenPrimary)
+                            Text(
+                                text = "CO2 Footprint",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = GreenPrimary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f)
+                            )
                         }
                         Text(
                             text = "${report.totalCo2WasteKg.toInt()} kg",
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            color = GreenPrimary
+                            color = GreenPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         Text(
                             text = "Avoidable GHG",
                             style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.5.sp),
-                            color = Color(0xFF166534)
+                            color = Color(0xFF166534),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }

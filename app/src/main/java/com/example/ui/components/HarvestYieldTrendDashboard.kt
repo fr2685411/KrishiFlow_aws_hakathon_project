@@ -315,7 +315,8 @@ fun HarvestYieldTrendDashboard(
                                     fontSize = 10.sp,
                                     color = if (isSelected) metric.color else MaterialTheme.colorScheme.onSurfaceVariant
                                 ),
-                                maxLines = 1
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }

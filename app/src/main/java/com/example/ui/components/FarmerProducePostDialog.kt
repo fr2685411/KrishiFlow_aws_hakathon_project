@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -64,6 +65,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -183,7 +185,7 @@ fun FarmerProducePostDialog(
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             modifier = Modifier
                 .fillMaxWidth(0.96f)
-                .height(720.dp)
+                .fillMaxHeight(0.92f)
                 .testTag("farmer_produce_post_dialog")
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
@@ -200,6 +202,9 @@ fun FarmerProducePostDialog(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Row(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 8.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
@@ -217,13 +222,15 @@ fun FarmerProducePostDialog(
                                     modifier = Modifier.size(24.dp)
                                 )
                             }
-                            Column {
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = "अपनी उपज लिस्ट करें / Post Produce",
                                     style = MaterialTheme.typography.titleMedium.copy(
                                         fontWeight = FontWeight.Bold,
                                         color = Color.White
-                                    )
+                                    ),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
@@ -238,7 +245,9 @@ fun FarmerProducePostDialog(
                                     Text(
                                         text = "Cloud Firestore Real-Time Sync",
                                         style = MaterialTheme.typography.labelSmall,
-                                        color = Color(0xFFBBF7D0)
+                                        color = Color(0xFFBBF7D0),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
                                     )
                                 }
                             }

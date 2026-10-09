@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -146,19 +147,62 @@ fun SaathiDriverAppScreen(
                             .clip(RoundedCornerShape(8.dp))
                             .background(Color(0xFF0F766E))
                             .padding(10.dp),
-                        horizontalArrangement = Arrangement.SpaceAround
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Active Shipments", style = MaterialTheme.typography.labelSmall, color = Color(0xFFCCFBF1))
-                            Text("${activeTrips.size}", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = Color.White))
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "Active Shipments",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Color(0xFFCCFBF1),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Text(
+                                text = "${activeTrips.size}",
+                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = Color.White),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
                         }
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Total Load", style = MaterialTheme.typography.labelSmall, color = Color(0xFFCCFBF1))
-                            Text("${activeTrips.sumOf { it.quantityKg }.toInt()} kg", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = Color.White))
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "Total Load",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Color(0xFFCCFBF1),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Text(
+                                text = "${activeTrips.sumOf { it.quantityKg }.toInt()} kg",
+                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = Color.White),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
                         }
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Vehicle Capacity", style = MaterialTheme.typography.labelSmall, color = Color(0xFFCCFBF1))
-                            Text("2,000 kg", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = Color(0xFFFEF08A)))
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "Vehicle Capacity",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Color(0xFFCCFBF1),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Text(
+                                text = "2,000 kg",
+                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = Color(0xFFFEF08A)),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
                         }
                     }
                 }
@@ -234,7 +278,7 @@ fun SaathiDriverAppScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(520.dp)
+                        .heightIn(min = 280.dp, max = 440.dp)
                 ) {
                     RegionalLogisticsMapScreen(uiState = uiState)
                 }
@@ -261,14 +305,21 @@ fun DriverTripCard(
             ) {
                 Text(
                     text = order.orderCode,
-                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 OrderStatusBadge(status = order.status)
             }
 
             Text(
                 text = "${order.quantityKg.toInt()} kg ${order.cropName}",
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             Surface(
@@ -277,8 +328,18 @@ fun DriverTripCard(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text("1. Pickup: Farmer ${order.farmerName}", style = MaterialTheme.typography.bodySmall)
-                    Text("2. Drop: ${order.buyerName} • ${order.destinationAddress}", style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold))
+                    Text(
+                        text = "1. Pickup: Farmer ${order.farmerName}",
+                        style = MaterialTheme.typography.bodySmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        text = "2. Drop: ${order.buyerName} • ${order.destinationAddress}",
+                        style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
             }
 

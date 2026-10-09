@@ -507,16 +507,24 @@ fun VyaparRfqDemandsTab(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp)
+                ) {
                     Text(
                         text = "Commercial Demand RFQs",
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Text(
                         text = "Broadcast your buying requirements directly to farmer clusters",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
@@ -528,7 +536,7 @@ fun VyaparRfqDemandsTab(
                 ) {
                     Icon(imageVector = Icons.Default.PostAdd, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("New RFQ", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    Text("New RFQ", fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                 }
             }
         }
@@ -645,18 +653,30 @@ fun VyaparProductCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
                         Text(
                             text = batch.cropName,
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f, fill = false)
                         )
                         QualityGradeBadge(grade = batch.qualityGrade)
                     }
                     Text(
                         text = "${batch.variety} • Code: ${batch.batchCode}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
@@ -672,12 +692,20 @@ fun VyaparProductCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
                     Icon(imageVector = Icons.Default.LocationOn, contentDescription = null, tint = GreenPrimary, modifier = Modifier.size(14.dp))
                     Text(
                         text = "${batch.farmLocation} (${batch.distanceKm} km)",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
@@ -693,7 +721,8 @@ fun VyaparProductCard(
                         Icon(imageVector = Icons.Default.AcUnit, contentDescription = null, tint = EcoTeal, modifier = Modifier.size(12.dp))
                         Text(
                             text = batch.storageCondition.displayName,
-                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, color = EcoTeal)
+                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, color = EcoTeal),
+                            maxLines = 1
                         )
                     }
                 }
@@ -712,18 +741,26 @@ fun VyaparProductCard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column {
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 8.dp)
+                    ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = "₹${batch.effectivePricePerKg.toInt()}",
-                                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, color = GreenPrimary)
+                                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, color = GreenPrimary),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
-                            Text(text = "/kg Delivered", style = MaterialTheme.typography.bodySmall)
+                            Text(text = "/kg Delivered", style = MaterialTheme.typography.bodySmall, maxLines = 1)
                         }
                         Text(
                             text = "Available: ${batch.availableQuantityKg.toInt()} kg",
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
 
@@ -733,7 +770,7 @@ fun VyaparProductCard(
                         shape = RoundedCornerShape(10.dp),
                         contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp)
                     ) {
-                        Text("Instant PO Order", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        Text("Instant PO Order", fontWeight = FontWeight.Bold, fontSize = 12.sp, maxLines = 1)
                     }
                 }
             }
@@ -758,11 +795,21 @@ fun VyaparSurplusCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
                         Text(
                             text = batch.cropName,
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f, fill = false)
                         )
                         Surface(
                             shape = RoundedCornerShape(6.dp),
@@ -771,14 +818,17 @@ fun VyaparSurplusCard(
                             Text(
                                 text = "-${batch.discountPercent}% OFF",
                                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, color = SpoilageRed),
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                maxLines = 1
                             )
                         }
                     }
                     Text(
                         text = "Lot: ${batch.batchCode} • ${batch.farmLocation}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
@@ -798,24 +848,33 @@ fun VyaparSurplusCard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column {
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 8.dp)
+                    ) {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                             Text(
                                 text = "₹${batch.effectivePricePerKg.toInt()}/kg",
-                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = SpoilageRed)
+                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = SpoilageRed),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                             Text(
                                 text = "₹${batch.deliveredPricePerKg.toInt()}/kg",
                                 style = MaterialTheme.typography.bodySmall.copy(
                                     color = Color.Gray,
                                     textDecoration = androidx.compose.ui.text.style.TextDecoration.LineThrough
-                                )
+                                ),
+                                maxLines = 1
                             )
                         }
                         Text(
                             text = "Remaining: ${batch.availableQuantityKg.toInt()} kg",
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
 
@@ -825,7 +884,7 @@ fun VyaparSurplusCard(
                         shape = RoundedCornerShape(8.dp),
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
                     ) {
-                        Text("Claim Clearance Lot", fontWeight = FontWeight.Bold, fontSize = 11.sp)
+                        Text("Claim Clearance Lot", fontWeight = FontWeight.Bold, fontSize = 11.sp, maxLines = 1)
                     }
                 }
             }
@@ -848,7 +907,12 @@ fun VyaparRfqCard(demand: BuyerDemandEntity) {
             ) {
                 Text(
                     text = "${demand.requiredQuantityKg.toInt()} kg ${demand.cropRequested}",
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
 
                 Surface(
@@ -861,7 +925,8 @@ fun VyaparRfqCard(demand: BuyerDemandEntity) {
                             fontWeight = FontWeight.Bold,
                             color = if (demand.status == "OPEN") GreenPrimary else Color(0xFFB45309)
                         ),
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        maxLines = 1
                     )
                 }
             }
@@ -869,13 +934,17 @@ fun VyaparRfqCard(demand: BuyerDemandEntity) {
             Text(
                 text = "Target Price: Max ₹${demand.maxOfferedPricePerKg.toInt()}/kg • Destination: ${demand.destinationLocation}",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
 
             Text(
                 text = "Posted by: ${demand.buyerName} (${demand.buyerType.displayName})",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }
@@ -897,15 +966,23 @@ fun VyaparOrderTrackingCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp)
+                ) {
                     Text(
                         text = order.orderCode,
-                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Text(
                         text = "${order.quantityKg.toInt()} kg ${order.cropName}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
@@ -927,7 +1004,8 @@ fun VyaparOrderTrackingCard(
                                 else -> Color(0xFFB45309)
                             }
                         ),
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        maxLines = 1
                     )
                 }
             }
@@ -935,7 +1013,9 @@ fun VyaparOrderTrackingCard(
             Text(
                 text = "Destination: ${order.destinationAddress}",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
 
             Row(
@@ -945,7 +1025,12 @@ fun VyaparOrderTrackingCard(
             ) {
                 Text(
                     text = "B2B Invoice: ₹${order.buyerPaymentTotal.toInt()}",
-                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold, color = GreenPrimary)
+                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold, color = GreenPrimary),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
 
                 if (order.status == OrderStatus.OUT_FOR_DELIVERY) {
@@ -955,7 +1040,7 @@ fun VyaparOrderTrackingCard(
                         shape = RoundedCornerShape(8.dp),
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
                     ) {
-                        Text("Confirm Store Delivery", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        Text("Confirm Store Delivery", fontSize = 11.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                     }
                 }
             }

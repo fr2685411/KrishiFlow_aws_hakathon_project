@@ -422,9 +422,9 @@ fun DemandMatcherBanner(
                             shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = GreenPrimary),
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                            modifier = Modifier.height(36.dp)
+                            modifier = Modifier.defaultMinSize(minHeight = 36.dp)
                         ) {
-                            Text("Allocate", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            Text("Allocate", fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                         }
                     }
                 }
@@ -711,14 +711,22 @@ fun DemandMatchSelectionDialog(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Column(modifier = Modifier.weight(1f)) {
+                            Column(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(end = 8.dp)
+                            ) {
                                 Text(
                                     text = "${b.batchCode} • ${b.farmerName}",
-                                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold)
+                                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                                 Text(
                                     text = "Available: ${b.availableQuantityKg.toInt()} kg • Price: ₹${b.effectivePricePerKg.toInt()}/kg",
-                                    style = MaterialTheme.typography.bodySmall
+                                    style = MaterialTheme.typography.bodySmall,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                             Button(
@@ -727,12 +735,13 @@ fun DemandMatchSelectionDialog(
                                     containerColor = if (selectedBatch?.id == b.id) GreenPrimary else MaterialTheme.colorScheme.surface
                                 ),
                                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
-                                modifier = Modifier.height(32.dp)
+                                modifier = Modifier.defaultMinSize(minHeight = 32.dp)
                             ) {
                                 Text(
                                     if (selectedBatch?.id == b.id) "Selected" else "Pick",
                                     fontSize = 11.sp,
-                                    color = if (selectedBatch?.id == b.id) Color.White else MaterialTheme.colorScheme.onSurface
+                                    color = if (selectedBatch?.id == b.id) Color.White else MaterialTheme.colorScheme.onSurface,
+                                    maxLines = 1
                                 )
                             }
                         }

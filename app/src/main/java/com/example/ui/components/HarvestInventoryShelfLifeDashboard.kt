@@ -73,6 +73,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -200,11 +201,19 @@ fun HarvestInventoryShelfLifeDashboard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
                         Icon(Icons.Default.TrendingUp, contentDescription = null, tint = GoldPrimary, modifier = Modifier.size(18.dp))
                         Text(
-                            text = "Market Price Spike Alerts (${uiState.priceSpikeAlerts.size})",
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold, color = GoldPrimary)
+                            text = "Price Spike Alerts (${uiState.priceSpikeAlerts.size})",
+                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold, color = GoldPrimary),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                     Surface(
@@ -212,13 +221,14 @@ fun HarvestInventoryShelfLifeDashboard(
                         color = GoldLight
                     ) {
                         Text(
-                            text = "Peak Selling Window",
+                            text = "Peak Window",
                             style = MaterialTheme.typography.labelSmall.copy(
                                 color = GoldPrimary,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 10.sp
                             ),
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                            maxLines = 1
                         )
                     }
                 }
@@ -582,11 +592,18 @@ fun HarvestBatchShelfLifeCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp)
+                ) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         Text(
                             text = "${batch.cropName} (${batch.variety})",
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold)
+                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f, fill = false)
                         )
                         Surface(
                             shape = RoundedCornerShape(4.dp),
@@ -599,14 +616,17 @@ fun HarvestBatchShelfLifeCard(
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 9.sp
                                 ),
-                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
+                                maxLines = 1
                             )
                         }
                     }
                     Text(
                         text = "Batch ${batch.batchCode} • ${batch.farmLocation} (${batch.distanceKm} km)",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
@@ -627,7 +647,8 @@ fun HarvestBatchShelfLifeCard(
                         )
                         Text(
                             text = if (batch.remainingHours > 0) "${batch.remainingHours}h left" else "Expired",
-                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, color = statusColor)
+                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, color = statusColor),
+                            maxLines = 1
                         )
                     }
                 }
@@ -714,40 +735,52 @@ fun HarvestBatchShelfLifeCard(
                     .clip(RoundedCornerShape(10.dp))
                     .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f))
                     .padding(10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
-                    Text("Stock in Storage", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Column(modifier = Modifier.weight(1f)) {
+                    Text("Stock in Storage", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp), color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     Text(
                         text = "${batch.availableQuantityKg.toInt()} Kg / ${batch.totalQuantityKg.toInt()} Kg",
-                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Text(
                         text = batch.storageCondition.displayName,
                         style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
-                        color = GreenPrimary
+                        color = GreenPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
-                Column(horizontalAlignment = Alignment.End) {
-                    Text("Current Price", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Column(
+                    modifier = Modifier.weight(1f),
+                    horizontalAlignment = Alignment.End
+                ) {
+                    Text("Current Price", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp), color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     Text(
                         text = "₹${String.format(Locale.getDefault(), "%.1f", batch.effectivePricePerKg)} / kg",
-                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold, color = GreenPrimary)
+                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold, color = GreenPrimary),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     if (batch.discountPercent > 0) {
                         Surface(shape = RoundedCornerShape(4.dp), color = SpoilageLight) {
                             Text(
                                 text = "-${batch.discountPercent}% Flash Deal",
                                 style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.sp, color = SpoilageRed, fontWeight = FontWeight.Bold),
-                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
+                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
+                                maxLines = 1
                             )
                         }
                     } else if (isCritical) {
                         Text(
                             text = "Loss risk: ₹${(batch.availableQuantityKg * batch.farmerAskingPricePerKg).toInt()}",
-                            style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, color = SpoilageRed, fontWeight = FontWeight.Bold)
+                            style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, color = SpoilageRed, fontWeight = FontWeight.Bold),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }

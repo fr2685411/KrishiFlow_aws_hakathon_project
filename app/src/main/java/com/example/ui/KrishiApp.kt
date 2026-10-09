@@ -843,7 +843,7 @@ fun KrishiApp(
                                         NavigationBarItem(
                                             selected = isSelected,
                                             onClick = { viewModel.setActiveTab(index) },
-                                            alwaysShowLabel = (screenWidth >= 360.dp || isSelected),
+                                            alwaysShowLabel = (if (activeNavItems.size > 5) isSelected else (screenWidth >= 360.dp || isSelected)),
                                             icon = {
                                                 if (item.badgeCount > 0) {
                                                     BadgedBox(
@@ -865,7 +865,7 @@ fun KrishiApp(
                                                 Text(
                                                     text = item.title,
                                                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                                                    fontSize = if (screenWidth < 360.dp) 10.sp else 11.sp,
+                                                    fontSize = if (activeNavItems.size > 5 || screenWidth < 360.dp) 10.sp else 11.sp,
                                                     maxLines = 1,
                                                     softWrap = false,
                                                     overflow = TextOverflow.Ellipsis

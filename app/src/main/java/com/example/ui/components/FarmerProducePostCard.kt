@@ -5,6 +5,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.FarmerProducePost
@@ -45,6 +48,7 @@ import com.example.ui.theme.GreenLight
 import com.example.ui.theme.GreenPrimary
 import java.util.Locale
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FarmerProducePostCard(
     post: FarmerProducePost,
@@ -69,6 +73,9 @@ fun FarmerProducePostCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
@@ -87,16 +94,20 @@ fun FarmerProducePostCard(
                         )
                     }
 
-                    Column {
+                    Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = post.cropName,
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurface,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         Text(
                             text = "${post.variety} • ${post.district}",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }
@@ -122,7 +133,8 @@ fun FarmerProducePostCard(
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontWeight = FontWeight.Bold,
                                 color = GreenPrimary
-                            )
+                            ),
+                            maxLines = 1
                         )
                     }
                 }
@@ -134,63 +146,81 @@ fun FarmerProducePostCard(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
                     .background(MaterialTheme.colorScheme.surface)
-                    .padding(12.dp),
+                    .padding(10.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
+                Column(modifier = Modifier.weight(1.1f)) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        Icon(Icons.Default.Scale, contentDescription = null, modifier = Modifier.size(14.dp), tint = GreenPrimary)
+                        Icon(Icons.Default.Scale, contentDescription = null, modifier = Modifier.size(13.dp), tint = GreenPrimary)
                         Text(
-                            text = "कुल मात्रा / Quantity",
+                            text = "Quantity",
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                     Text(
                         text = post.formattedQuantity,
                         style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Column(
+                    modifier = Modifier.weight(0.9f),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Text(
-                        text = "मूल्य / Price",
+                        text = "मूल्य / Rate",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = "₹${String.format(Locale.getDefault(), "%.2f", post.askingPricePerKg)} / kg",
+                        text = "₹${String.format(Locale.getDefault(), "%.2f", post.askingPricePerKg)}/kg",
                         style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                        color = GoldPrimary
+                        color = GoldPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
-                Column(horizontalAlignment = Alignment.End) {
+                Column(
+                    modifier = Modifier.weight(1.0f),
+                    horizontalAlignment = Alignment.End
+                ) {
                     Text(
-                        text = "अनुमानित आय / Payout",
+                        text = "Payout",
                         style = MaterialTheme.typography.labelSmall,
-                        color = GreenPrimary
+                        color = GreenPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Text(
                         text = "₹${String.format(Locale.getDefault(), "%,.0f", post.totalEstimatedPayout)}",
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Bold,
                             color = GreenPrimary
-                        )
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
 
             // Quality & Logistics Chips
-            Row(
+            FlowRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 Surface(
                     shape = RoundedCornerShape(6.dp),
@@ -208,7 +238,8 @@ fun FarmerProducePostCard(
                             QualityGrade.GRADE_B -> Color(0xFF334155)
                             QualityGrade.GRADE_C -> Color(0xFF9A3412)
                         },
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp),
+                        maxLines = 1
                     )
                 }
 
@@ -220,7 +251,7 @@ fun FarmerProducePostCard(
                             horizontalArrangement = Arrangement.spacedBy(2.dp)
                         ) {
                             Icon(Icons.Default.Eco, contentDescription = null, tint = GreenPrimary, modifier = Modifier.size(11.dp))
-                            Text("Residue-Free", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = GreenPrimary)
+                            Text("Residue-Free", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = GreenPrimary, maxLines = 1)
                         }
                     }
                 }
@@ -233,18 +264,20 @@ fun FarmerProducePostCard(
                             horizontalArrangement = Arrangement.spacedBy(2.dp)
                         ) {
                             Icon(Icons.Default.LocalShipping, contentDescription = null, tint = EcoTeal, modifier = Modifier.size(11.dp))
-                            Text("Ready for Pickup", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = EcoTeal)
+                            Text("Ready Pickup", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = EcoTeal, maxLines = 1)
                         }
                     }
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
-
-                Text(
-                    text = "Fresh: ${post.expectedFreshnessDays}d",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Surface(shape = RoundedCornerShape(6.dp), color = MaterialTheme.colorScheme.surface) {
+                    Text(
+                        text = "Fresh: ${post.expectedFreshnessDays}d",
+                        style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp),
+                        maxLines = 1
+                    )
+                }
             }
 
             // Optional Notes
@@ -253,7 +286,8 @@ fun FarmerProducePostCard(
                     text = "नोट: ${post.notes}",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
