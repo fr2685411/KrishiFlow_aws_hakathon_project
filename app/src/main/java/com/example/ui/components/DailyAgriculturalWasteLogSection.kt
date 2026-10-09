@@ -70,6 +70,7 @@ import com.example.data.export.WasteLogCsvExportResult
 import com.example.data.export.WasteLogCsvExporter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -344,6 +345,9 @@ fun DailyAgriculturalWasteLogSection(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Row(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 8.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -351,11 +355,12 @@ fun DailyAgriculturalWasteLogSection(
                                 onClick = { showLogDialog = true },
                                 colors = ButtonDefaults.buttonColors(containerColor = GreenPrimary),
                                 shape = RoundedCornerShape(12.dp),
+                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp, vertical = 6.dp),
                                 modifier = Modifier.testTag("log_waste_open_dialog_btn")
                             ) {
-                                Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
-                                Spacer(Modifier.width(6.dp))
-                                Text("Log Surplus", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
+                                Spacer(Modifier.width(4.dp))
+                                Text("Log Surplus", fontWeight = FontWeight.Bold, fontSize = 12.sp, maxLines = 1)
                             }
 
                             OutlinedButton(
@@ -367,18 +372,20 @@ fun DailyAgriculturalWasteLogSection(
                                     }
                                 },
                                 shape = RoundedCornerShape(12.dp),
+                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp, vertical = 6.dp),
                                 modifier = Modifier.testTag("export_waste_logs_csv_btn")
                             ) {
-                                Icon(Icons.Default.FileDownload, contentDescription = null, modifier = Modifier.size(18.dp))
-                                Spacer(Modifier.width(6.dp))
-                                Text("Export CSV", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                Icon(Icons.Default.FileDownload, contentDescription = null, modifier = Modifier.size(16.dp))
+                                Spacer(Modifier.width(4.dp))
+                                Text("Export CSV", fontWeight = FontWeight.Bold, fontSize = 12.sp, maxLines = 1)
                             }
                         }
 
                         Text(
                             text = "${filteredLogs.size} logs",
                             style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1
                         )
                     }
 

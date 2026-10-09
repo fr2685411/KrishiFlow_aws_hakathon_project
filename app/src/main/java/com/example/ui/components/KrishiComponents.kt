@@ -78,7 +78,10 @@ fun MetricStatCard(
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 4.dp)
                 )
                 Box(
                     modifier = Modifier
@@ -101,7 +104,9 @@ fun MetricStatCard(
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp
                 ),
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             Text(
                 text = subtitle,
@@ -136,6 +141,9 @@ fun FreshnessGauge(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
+                modifier = Modifier
+                    .weight(1f, fill = false)
+                    .padding(end = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
@@ -146,15 +154,18 @@ fun FreshnessGauge(
                     modifier = Modifier.size(14.dp)
                 )
                 Text(
-                    text = if (remainingHours > 24) "${remainingHours / 24}d remaining" else "$remainingHours hrs window",
+                    text = if (remainingHours > 24) "${remainingHours / 24}d window" else "$remainingHours hrs window",
                     style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
-                    color = barColor
+                    color = barColor,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
             Text(
                 text = "$freshnessPercentage% Fresh",
                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                color = barColor
+                color = barColor,
+                maxLines = 1
             )
         }
         Spacer(modifier = Modifier.height(4.dp))

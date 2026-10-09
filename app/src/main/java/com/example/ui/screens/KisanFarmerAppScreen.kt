@@ -77,6 +77,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.theme.EcoTeal
@@ -137,6 +138,9 @@ fun KisanFarmerAppScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Row(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 8.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
@@ -154,18 +158,22 @@ fun KisanFarmerAppScreen(
                                     modifier = Modifier.size(22.dp)
                                 )
                             }
-                            Column {
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = "KrishiFlow Kisan",
                                     style = MaterialTheme.typography.titleMedium.copy(
                                         fontWeight = FontWeight.Bold,
                                         color = Color.White
-                                    )
+                                    ),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                                 Text(
                                     text = "किसान साथी • डायरेक्ट मंडी और मार्ट",
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = Color(0xFFBBF7D0)
+                                    color = Color(0xFFBBF7D0),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         }
@@ -179,7 +187,8 @@ fun KisanFarmerAppScreen(
                                     fontWeight = FontWeight.Bold,
                                     color = Color(0xFF713F12)
                                 ),
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                maxLines = 1
                             )
                         }
                     }
@@ -238,6 +247,9 @@ fun KisanFarmerAppScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Row(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 8.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
@@ -255,17 +267,21 @@ fun KisanFarmerAppScreen(
                                     modifier = Modifier.size(22.dp)
                                 )
                             }
-                            Column {
+                            Column(modifier = Modifier.weight(1f)) {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                    modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(
                                         text = "KrishiMitra Gemini AI",
                                         style = MaterialTheme.typography.titleMedium.copy(
                                             fontWeight = FontWeight.Bold,
                                             color = Color(0xFF4C1D95)
-                                        )
+                                        ),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                        modifier = Modifier.weight(1f, fill = false)
                                     )
                                     Surface(
                                         shape = RoundedCornerShape(6.dp),
@@ -278,14 +294,17 @@ fun KisanFarmerAppScreen(
                                                 fontWeight = FontWeight.Bold,
                                                 color = Color(0xFF5B21B6)
                                             ),
-                                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                            maxLines = 1
                                         )
                                     }
                                 }
                                 Text(
                                     text = "Your App-Aware AI Assistant • बोलकर या लिखकर पूछें",
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = Color(0xFF6D28D9)
+                                    color = Color(0xFF6D28D9),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         }

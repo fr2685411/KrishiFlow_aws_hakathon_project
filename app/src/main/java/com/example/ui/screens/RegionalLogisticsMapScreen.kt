@@ -75,6 +75,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.gemini.FallbackVerifiedPlaces
@@ -247,7 +248,13 @@ fun RegionalLogisticsMapScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Row(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
                             Box(
                                 modifier = Modifier
                                     .size(36.dp)
@@ -262,18 +269,22 @@ fun RegionalLogisticsMapScreen(
                                     modifier = Modifier.size(20.dp)
                                 )
                             }
-                            Column {
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = "Live Regional Route & Maps",
                                     style = MaterialTheme.typography.titleMedium.copy(
                                         fontWeight = FontWeight.Bold,
                                         color = Color.White
-                                    )
+                                    ),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                                 Text(
                                     text = "Farm-Gate to DC Tracking • Google Maps Grounding",
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = Color(0xFFCCFBF1)
+                                    color = Color(0xFFCCFBF1),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         }
@@ -302,7 +313,8 @@ fun RegionalLogisticsMapScreen(
                                     style = MaterialTheme.typography.labelSmall.copy(
                                         fontWeight = FontWeight.Bold,
                                         color = Color(0xFF713F12)
-                                    )
+                                    ),
+                                    maxLines = 1
                                 )
                             }
                         }
@@ -516,21 +528,27 @@ fun SelectedNodeDetailCard(
                     )
                 }
                 Text(
-                    text = "${node.distanceKm} km • ~${node.etaMinutes} mins ETA",
+                    text = "${node.distanceKm} km • ~${node.etaMinutes}m ETA",
                     style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                    color = node.type.color
+                    color = node.type.color,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
 
             Text(
                 text = node.title,
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             Text(
                 text = "${node.subtitle} • ${node.address}",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
 
             Surface(
@@ -555,7 +573,7 @@ fun SelectedNodeDetailCard(
                 ) {
                     Icon(imageVector = Icons.Default.Call, contentDescription = null, modifier = Modifier.size(14.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Call Hub", fontSize = 12.sp)
+                    Text("Call Hub", fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
 
                 Button(
@@ -566,7 +584,7 @@ fun SelectedNodeDetailCard(
                 ) {
                     Icon(imageVector = Icons.Default.Directions, contentDescription = null, modifier = Modifier.size(14.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Open Navigation", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    Text("Navigate", fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
         }

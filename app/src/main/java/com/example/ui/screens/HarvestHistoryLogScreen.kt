@@ -248,22 +248,28 @@ fun HarvestHistoryLogScreen(
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 8.dp)
                         ) {
                             Surface(shape = CircleShape, color = GreenLight, modifier = Modifier.size(32.dp)) {
                                 Box(contentAlignment = Alignment.Center) {
                                     Icon(Icons.Default.CloudDone, contentDescription = null, tint = GreenPrimary, modifier = Modifier.size(18.dp))
                                 }
                             }
-                            Column {
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = "WorkManager Auto-Sync to Cloud",
-                                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold)
+                                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                                 Text(
                                     text = uiState.workManagerSyncState ?: "Syncs Room DB to Firestore on internet connection",
                                     style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
-                                    color = if (uiState.workManagerSyncState?.contains("Syncing") == true) GoldPrimary else GreenPrimary
+                                    color = if (uiState.workManagerSyncState?.contains("Syncing") == true) GoldPrimary else GreenPrimary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         }
@@ -277,7 +283,7 @@ fun HarvestHistoryLogScreen(
                         ) {
                             Icon(Icons.Default.Sync, contentDescription = null, modifier = Modifier.size(14.dp))
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text("Sync Now", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                            Text("Sync Now", fontSize = 11.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                         }
                     }
                 }
@@ -299,21 +305,31 @@ fun HarvestHistoryLogScreen(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Row(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(end = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
                                 Surface(shape = CircleShape, color = GreenPrimary, modifier = Modifier.size(32.dp)) {
                                     Box(contentAlignment = Alignment.Center) {
                                         Icon(Icons.Default.PictureAsPdf, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
                                     }
                                 }
-                                Column {
+                                Column(modifier = Modifier.weight(1f)) {
                                     Text(
-                                        text = "Official Banking & Credit Summary Report",
-                                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold, color = GreenPrimary)
+                                        text = "Official Banking Report",
+                                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold, color = GreenPrimary),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
                                     )
                                     Text(
                                         text = "बैंक ऋण व कृषि अधिकारी हेतु PDF रिपोर्ट",
                                         style = MaterialTheme.typography.labelSmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
                                     )
                                 }
                             }
@@ -322,7 +338,8 @@ fun HarvestHistoryLogScreen(
                                 Text(
                                     text = "Bank Ready",
                                     style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, color = GoldPrimary),
-                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                    maxLines = 1
                                 )
                             }
                         }

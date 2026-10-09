@@ -52,6 +52,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.ProduceBatchEntity
@@ -266,6 +267,9 @@ fun EnvironmentalImpactBanner(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
@@ -283,16 +287,20 @@ fun EnvironmentalImpactBanner(
                                 modifier = Modifier.size(20.dp)
                             )
                         }
-                        Column {
+                        Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = "Waste & Spoilage Prevention",
                                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                color = Color.White
+                                color = Color.White,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                             Text(
                                 text = "Environmental Hackathon Pilot",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = GreenAccent
+                                color = GreenAccent,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }
@@ -304,38 +312,45 @@ fun EnvironmentalImpactBanner(
                             text = "0% Loss Aim",
                             style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                             color = GreenAccent,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            maxLines = 1
                         )
                     }
                 }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Column {
-                        Text("Food Rescued", style = MaterialTheme.typography.labelSmall, color = Color(0xFFBBF7D0))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text("Food Rescued", style = MaterialTheme.typography.labelSmall, color = Color(0xFFBBF7D0), maxLines = 1, overflow = TextOverflow.Ellipsis)
                         Text(
                             text = "${rescuedKg.toInt()} kg",
-                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, color = Color.White)
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = Color.White),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
-                        Text("Prevented landfill rot", style = MaterialTheme.typography.labelSmall, color = Color(0xFF86EFAC))
+                        Text("Prevented rot", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp), color = Color(0xFF86EFAC), maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Value Protected", style = MaterialTheme.typography.labelSmall, color = Color(0xFFBBF7D0))
+                    Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("Value Saved", style = MaterialTheme.typography.labelSmall, color = Color(0xFFBBF7D0), maxLines = 1, overflow = TextOverflow.Ellipsis)
                         Text(
                             text = "₹${lossPreventedRupees.toInt()}",
-                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, color = Color(0xFFFEF08A))
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = Color(0xFFFEF08A)),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
-                        Text("Farmer revenue saved", style = MaterialTheme.typography.labelSmall, color = Color(0xFF86EFAC))
+                        Text("Farmer payout", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp), color = Color(0xFF86EFAC), maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
-                    Column(horizontalAlignment = Alignment.End) {
-                        Text("CO2e Avoided", style = MaterialTheme.typography.labelSmall, color = Color(0xFFBBF7D0))
+                    Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.End) {
+                        Text("CO2e Cut", style = MaterialTheme.typography.labelSmall, color = Color(0xFFBBF7D0), maxLines = 1, overflow = TextOverflow.Ellipsis)
                         Text(
                             text = "${co2SavedKg.toInt()} kg",
-                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, color = Color.White)
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = Color.White),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
-                        Text("Greenhouse gas cut", style = MaterialTheme.typography.labelSmall, color = Color(0xFF86EFAC))
+                        Text("GHG reduced", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp), color = Color(0xFF86EFAC), maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
             }
@@ -363,6 +378,9 @@ fun SurplusBatchCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
@@ -382,19 +400,22 @@ fun SurplusBatchCard(
                                 modifier = Modifier.size(12.dp)
                             )
                             Text(
-                                text = "Surplus Action Needed",
+                                text = "Surplus Action",
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 10.sp
                                 ),
-                                color = SpoilageRed
+                                color = SpoilageRed,
+                                maxLines = 1
                             )
                         }
                     }
                     Text(
                         text = batch.batchCode,
                         style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
                 QualityGradeBadge(grade = batch.qualityGrade)
@@ -407,16 +428,24 @@ fun SurplusBatchCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp)
+                ) {
                     Text(
                         text = batch.cropName,
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Text(
                         text = "From: ${batch.farmerName} • ${batch.farmLocation}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
                 Column(horizontalAlignment = Alignment.End) {
@@ -426,14 +455,16 @@ fun SurplusBatchCard(
                             style = MaterialTheme.typography.bodySmall.copy(
                                 textDecoration = androidx.compose.ui.text.style.TextDecoration.LineThrough
                             ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1
                         )
                         Text(
                             text = "₹${batch.effectivePricePerKg.toInt()}/kg (-${batch.discountPercent}%)",
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontWeight = FontWeight.Bold,
                                 color = SpoilageRed
-                            )
+                            ),
+                            maxLines = 1
                         )
                     } else {
                         Text(
@@ -441,7 +472,8 @@ fun SurplusBatchCard(
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
-                            )
+                            ),
+                            maxLines = 1
                         )
                     }
                 }
@@ -465,7 +497,12 @@ fun SurplusBatchCard(
                 Text(
                     text = "${batch.availableQuantityKg.toInt()} kg remaining unsold",
                     style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
-                    color = WarningOrange
+                    color = WarningOrange,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Button(
                     onClick = onTriggerFlashDiscount,
@@ -473,7 +510,7 @@ fun SurplusBatchCard(
                         containerColor = if (batch.discountPercent > 0) GreenPrimary else WarningOrange
                     ),
                     shape = RoundedCornerShape(8.dp),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                    contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
                     modifier = Modifier.height(34.dp)
                 ) {
                     Icon(
@@ -483,9 +520,10 @@ fun SurplusBatchCard(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = if (batch.discountPercent > 0) "Update Discount" else "Flash Discount Alert",
+                        text = if (batch.discountPercent > 0) "Discounted" else "Flash Sale",
                         fontSize = 11.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1
                     )
                 }
             }
