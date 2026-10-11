@@ -18,8 +18,8 @@ enum class AiProvider(
     GEMINI(
         id = "gemini",
         displayName = "Google Gemini",
-        defaultModel = "gemini-1.5-flash",
-        supportedModels = listOf("gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"),
+        defaultModel = "gemini-3.5-flash",
+        supportedModels = listOf("gemini-3.5-flash", "gemini-3.1-pro-preview", "gemini-3.1-flash-lite-preview"),
         keyPrefixHint = "AIzaSy...",
         docsUrl = "https://aistudio.google.com/app/apikey"
     ),
@@ -138,7 +138,14 @@ object KrishiAiKeyManager {
     fun getSelectedModel(context: Context, provider: AiProvider): String {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return when (provider) {
-            AiProvider.GEMINI -> prefs.getString(KEY_GEMINI_MODEL, AiProvider.GEMINI.defaultModel) ?: AiProvider.GEMINI.defaultModel
+            AiProvider.GEMINI -> {
+                val saved = prefs.getString(KEY_GEMINI_MODEL, AiProvider.GEMINI.defaultModel) ?: AiProvider.GEMINI.defaultModel
+                if (saved.contains("1.5") || saved.contains("2.0") || !AiProvider.GEMINI.supportedModels.contains(saved)) {
+                    AiProvider.GEMINI.defaultModel
+                } else {
+                    saved
+                }
+            }
             AiProvider.OPENAI -> prefs.getString(KEY_OPENAI_MODEL, AiProvider.OPENAI.defaultModel) ?: AiProvider.OPENAI.defaultModel
             AiProvider.CLAUDE -> prefs.getString(KEY_CLAUDE_MODEL, AiProvider.CLAUDE.defaultModel) ?: AiProvider.CLAUDE.defaultModel
             AiProvider.OFFLINE_BIO_SYNTHESIS -> AiProvider.OFFLINE_BIO_SYNTHESIS.defaultModel
